@@ -1,5 +1,26 @@
 from sqlite3 import connect  # Import library to connect to and alter the database
 
+# Quick sort functions
+def partition(arr, low_bound: int, high_bound: int):
+    """
+    Function to sort a partition of an array
+
+    Parameters:
+        arr (2D list of varied types): The array to sort
+        low_bound (int): The lower end of the partition to sort
+        high_bound (int): The upper end of the partition to sort
+
+    Returns:
+        new_i (int): The index of the new pivot location
+    """
+    pass #TODO: Impliment this
+
+def quick_sort(arr, low: int, high: int):
+    """
+    
+    """
+    pass #TODO: Impliment this
+
 # Class used for managing the database
 class database_manager:
     def __init__(self, file_addr: str) -> None:
@@ -36,5 +57,25 @@ class database_manager:
             where_str = ""  # If there was no specifer, the WHERE statement is empty (does not exist)
         
         query = "SELECT " + fields_str + " FROM " + table + where_str + ";"  # Build the query
-        data = self.cursor.execute(query)  # Run the query and save the result to data
+        data = self.cursor.execute(query).fetchall()  # Run the query and save the result to data
         return data
+
+    def fetch_leaderboard(self, class_id: int):
+        """
+        Method to fetch all leaderboard data for a specified class
+
+        Parameters:
+            class_id (int): The ID of the class leaderboard to return
+
+        Returns:
+            leaderboard (list of varied types): The sorted leaderboard for the class
+        """
+        # Create the query to run
+        query = """
+                SELECT Students.username, Students.xp
+                FROM Students JOIN Student_Class_Link ON (Students.id == Student_Class_Link.student_id)
+                WHERE Student_Class_Link.class_id == 
+                """ + str(class_id) + ";"
+        data = self.cursor.execute(query).fetchall()  # Run the query to fetch the data
+        leaderboard = quick_sort(data, 0, len(data))  # Sort the data into ascending order
+        return leaderboard
