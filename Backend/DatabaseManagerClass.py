@@ -26,4 +26,15 @@ class database_manager:
         """
         fields_str = ""
         for i in range(len(fields)):  # Iterate over all of the provided fields to return
-            fields_str += str(i)
+            fields_str += str(i)  # Add each item to the string
+            fields_str += ", "  # Separate the items with a comma and space
+        fields_str = fields_str[:2]  # Remove the final comma and space to end the list correctly in the string
+        
+        if specifier:  # If a specifier was provided
+            where_str = " WHERE " + specifier[0] + " LIKE '" + specifier[1] + "%'"  # Build the WHERE statement of the query
+        else:
+            where_str = ""  # If there was no specifer, the WHERE statement is empty (does not exist)
+        
+        query = "SELECT " + fields_str + " FROM " + table + where_str + ";"  # Build the query
+        data = self.cursor.execute(query)  # Run the query and save the result to data
+        return data
