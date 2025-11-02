@@ -103,3 +103,28 @@ class database_manager:
         data = self.cursor.execute(query).fetchall()  # Run the query to fetch the data
         leaderboard = quick_sort(data, 0, len(data))  # Sort the data into ascending order
         return leaderboard
+
+    def create_new_user(self, user_type, username, hashed_password, email):
+        """
+        Method to persistently store a new user within the database given pre-validated data
+
+        Parameters:
+            user_type (str): The type of user to add (Student or Teacher)
+            username (str): The username of the new user
+            hashed_password (str): The hash value of the password
+            email (str): The email associated with the new account
+
+        Returns:
+            success (bool): Flag to indicate if the operation was successful
+        """
+        if user_type == "Student":  # Insert values to student table for students
+            query = "INSERT INTO Students(username, hashed_password, email, xp) VALUES ('" + username + "', '"+ hashed_password +"', '"+ email +"', 0);"
+            success = True
+        elif user_type == "Teacher":  # Insert values to teacher table for teachers
+            query = "INSERT INTO Teachers(username, hashed_password, email) VALUES ('"+ username +"', '"+ hashed_password +"', '"+ email +"');"
+            success = True
+        else:  # If the user type is invalid
+            query = ""
+            success = False
+        self.cursor.execute(query)  # Run the query
+        return success
