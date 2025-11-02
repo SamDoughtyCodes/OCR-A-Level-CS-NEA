@@ -3,23 +3,47 @@ from sqlite3 import connect  # Import library to connect to and alter the databa
 # Quick sort functions
 def partition(arr, low_bound: int, high_bound: int):
     """
-    Function to sort a partition of an array
+    Function to sort a partition of an array as part of a quicksort
 
     Parameters:
-        arr (2D list of varied types): The array to sort
+        arr (list of integers): The sublist to sort
         low_bound (int): The lower end of the partition to sort
         high_bound (int): The upper end of the partition to sort
 
     Returns:
         new_i (int): The index of the new pivot location
     """
-    pass #TODO: Impliment this
+    pivot = arr[high_bound]  # Select the final element of the sublist as the pivot
+    i = low_bound - 1  # Set a pointer beneath the first element of the sublist
+    for ii in range(low_bound, high_bound):  # Iterate over the sublist
+        if arr[ii] <= pivot:  # If the current item is less than the pivot
+            # Increment lower pointer and swap items
+            i += 1
+            arr[i], arr[ii] = arr[ii], arr[i]
+    
+    # Swap the pivot and item above pointer
+    arr[i+1], arr[high_bound] = pivot, arr[i+1]
+    new_i = i + 1  # Set index of new pivot
+    return new_i
+
 
 def quick_sort(arr, low: int, high: int):
     """
-    
+    The function used both to initiate a quicksort, and to recursively call it on each sublist
+
+    Parameters:
+        arr (list[int]): The array to sort
+        low (int): Pointer for the lower bound of the list
+        high (int): Pointer for the upper bound of the list
+
+    Returns:
+        sorted_arr (list[int])
     """
-    pass #TODO: Impliment this
+    if high > low:  # If the pointers have not crossed (base case)
+        pivot = partition(arr, low, high)  # Sort list and find pivot to use
+        quick_sort(arr, low, pivot-1)  # Call quicksort on lower segment
+        quick_sort(arr, pivot+1, high)  # Call quicksort on upper segment
+    return arr
 
 # Class used for managing the database
 class database_manager:
