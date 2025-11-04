@@ -128,3 +128,23 @@ class database_manager:
             success = False
         self.cursor.execute(query)  # Run the query
         return success
+
+    def add_student_class_link(self, student_id, class_id):
+        """
+        Method to add a new link inside the Student_Class_Link table
+
+        Parameters:
+            student_id (int): The ID of the student to add
+            class_id (int): The ID of the class the student is being added to
+
+        Returns:
+            success (bool): A flag to indicate if the data was added successfully
+        """
+        try:  # Attempt to run code
+            # Create query to add new link
+            query = "INSERT INTO Student_Class_Link(student_id, class_id) VALUES (" + str(student_id) + ", " + str(class_id) + ");"
+            self.cursor.execute(query)  # Run query
+            success = True
+        except:  # If an error is raised, the data was added unsuccessfully
+            success = False
+        return success
