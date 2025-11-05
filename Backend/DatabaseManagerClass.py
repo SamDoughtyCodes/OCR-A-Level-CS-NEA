@@ -167,3 +167,23 @@ class database_manager:
         except:  # If an error is raised, the data was added unsuccessfully
             success = False
         return success
+
+    def crete_new_task(self, set_id, due_date, class_id):
+        """
+        Method to persistently write a new task to the database
+
+        Parameters:
+            set_id (int): The ID of the question set that will feature in the task
+            due_date (datetime obj): DateTime object containing the due date of the task
+            class_id (int): The ID of the class that the task is being assigned to
+
+        Returns:
+            success (bool): A flag to indicate if the data was added successfully
+        """
+        try: # Attempt to run code
+            query = "INSERT INTO Tasks(set_id, due_date, class_id) VALUES (" + str(set_id) + ", " + str(due_date) + ", " + str(class_id) + ");"
+            self.cursor.execute(query)  # Run the query
+            success = True  # Indicate that the code ran successfully
+        except:  # If an error is raised, the data was added unsuccessfully
+            success = False
+        return success
