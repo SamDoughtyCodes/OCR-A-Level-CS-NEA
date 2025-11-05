@@ -148,3 +148,22 @@ class database_manager:
         except:  # If an error is raised, the data was added unsuccessfully
             success = False
         return success
+
+    def create_new_class(self, class_name, owner_id):
+        """
+        Method which creates a new empty class within the database
+
+        Parameters:
+            class_name (str): The name by which the class will be refered to as
+            owner_id (int): The ID of the teacher associated with the class
+
+        Returns:
+            success (bool): A flag to indicate if the data was added successfully
+        """
+        try:  # Attempt to run code
+            query = "INSERT INTO Classes(name, teacher_id) VALUES ('" + class_name + "', " + str(owner_id) + ");"
+            self.cursor.execute(query)  # Run query
+            success = True
+        except:  # If an error is raised, the data was added unsuccessfully
+            success = False
+        return success
