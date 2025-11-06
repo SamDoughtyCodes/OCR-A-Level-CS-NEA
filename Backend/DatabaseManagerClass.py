@@ -187,3 +187,45 @@ class database_manager:
         except:  # If an error is raised, the data was added unsuccessfully
             success = False
         return success
+
+    def fetch_student_data(self, student_id):
+        """
+        Method which fetches relevant data for a student, including their username, XP, classes they ae a memeber of, and all submissions
+
+        Parameters:
+            student_id (int): The ID of the student to fetch data for
+
+        Returns:
+            usr_data (dict): The collated and formated data for the student
+        """
+        # Build queries
+        query_user_tbl = "SELECT username, xp FROM Students WHERE id == " + str(student_id) + ";"
+        query_class_link = """SELECT Classes.id, Classes.name
+                            FROM Classes JOIN Student_Class_Link ON (Classes.id == Student_Class_Link.class_id)
+                            WHERE Student_Class_Link.student_id == """ + str(student_id) + ";"
+        query_submissions = """ SELECT Submissions.id, Submissions.date, Submissions.Score, Tasks.set_id
+                            FROM Submissions JOIN Tasks ON (Submissions.task_id == Tasks.id)
+                            WHERE Submissions.student_id == """ + str(student_id) + ";"
+        
+        # Run the queries
+        usr_tbl = self.cursor.execute(query_user_tbl).fetchall()
+        classes = self.cursor.execute(query_class_link).fetchall()
+        submissions = self.cursor.execute(query_submissions).fetchall()
+
+        # Format submissions to be stored with the task names
+        for submission in submissions:
+            name = self.fetch_all_records("Q_Sets", ["name"], ["id", submission["set_id"]])
+            submission["set_name"] = name  # Add a key-value pair to the dict to includ the set name for each submission
+        
+        # Format the return data
+        usr_data = {
+            # Personal is a dict containing the username and xp of the student
+            "personal": {
+                "username": usr_tbl[0]["username"],
+                "xp": usr_tbl[0]["xp"]
+            },
+            "classes": classes,  # Data on all classes the student is in
+            "submissions": submissions  # All submission data for that student
+        }
+
+        return usr_data
