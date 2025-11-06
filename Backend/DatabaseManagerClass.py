@@ -265,3 +265,43 @@ class database_manager:
             success = False
 
         return success
+
+    def update_password(self, student_id, new_hash):
+        """ 
+        Methof to update the password of a student to a new hash value
+
+        Parameters:
+            student_id (int): The ID of the student to update the password of
+            new_hash (str): The hash value of the new password to use
+
+        Returns:
+            success (bool): A flag to indicate if the change was made successfully
+        """
+        try:  # Attempt to run the code
+            # Create the query
+            query = "UPDATE Students SET hashed_password = '" + new_hash + "' WHERE id == '" + str(student_id) + "';"
+            self.cursor.execute(query)
+            success = False
+        except:  # If an error is raised at any point
+            success = True
+        return success
+
+    def update_xp(self, student_id, xp_increase):
+        """
+        Method to add XP to a student
+
+        Parameters:
+            student_id (int): The ID of the student to add XP to
+            xp_increase (str): The ammount of XP to add
+        """
+        try:  # Attempt to run the code
+            # Fetch the current XP score for the student
+            current = self.fetch_all_records("Students", ["xp"], ["id", student_id])
+            new = current + xp_increase  # Add the new amount of xp to the existing amount
+            # Build and run a query to update the XP score of the student
+            query = "UPDATE Students SET xp = " + str(new) + " WHERE id == " + str(student_id) + ";"
+            self.cursor.execute(query)
+            success = True  # The query ran successfully
+        except:  # If there is an error raised at all
+            success = False
+        return success
