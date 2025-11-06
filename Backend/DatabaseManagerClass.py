@@ -203,7 +203,7 @@ class database_manager:
         query_class_link = """SELECT Classes.id, Classes.name
                             FROM Classes JOIN Student_Class_Link ON (Classes.id == Student_Class_Link.class_id)
                             WHERE Student_Class_Link.student_id == """ + str(student_id) + ";"
-        query_submissions = """ SELECT Submissions.id, Submissions.date, Submissions.Score, Tasks.set_id
+        query_submissions = """ SELECT Submissions.id, Submissions.completion_date, Submissions.Score, Tasks.set_id
                             FROM Submissions JOIN Tasks ON (Submissions.task_id == Tasks.id)
                             WHERE Submissions.student_id == """ + str(student_id) + ";"
         
