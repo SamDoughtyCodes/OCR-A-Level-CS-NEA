@@ -229,3 +229,34 @@ class database_manager:
         }
 
         return usr_data
+    
+    def update_username(self, student_id, new_usrnm):
+        #TODO: Add unique username validation to new user method too
+        """
+        Method to update the username of a student to a new, unique one
+
+        Parameters:
+            student_id (int): The ID of the student which needs updating
+            new_usrnm (str): The new username to change to
+
+        Returns:
+            success (bool): A flag to indicate if the change was made successfully
+        """
+        try:  # Attempt to run the code
+            # Fetch all usernames like the newly provided one
+            usrs = self.fetch_all_records("Students", ["username"], ["username", new_usrnm])
+
+            # If there are users with this username already
+            if usrs:
+                # Append an integer to ensure it is unique
+                new_int = len(usrs)
+                new_usrnm += str(new_int)
+
+            # The username is now unique and ready to update
+            query = "UPDATE Students SET username = '" + new_usrnm + "' WHERE id == " + str(student_id) + ";"
+            self.cursor.execute(query)  # Run the query
+            success = True
+        except:  # If an error was raised at any point
+            success = False
+
+        return success
