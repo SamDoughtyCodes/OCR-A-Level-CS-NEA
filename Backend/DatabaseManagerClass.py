@@ -117,6 +117,12 @@ class database_manager:
         Returns:
             success (bool): Flag to indicate if the operation was successful
         """
+        # Ensure that the username provided is unique
+        existing_users = self.fetch_all_records("Students", ["username"], ["username", username])
+        if existing_users:  # If the username is not unique
+            new_int = len(existing_users)  # Find the integer needed for uniqueness
+            username += str(new_int)  # Add the integer
+
         if user_type == "Student":  # Insert values to student table for students
             query = "INSERT INTO Students(username, hashed_password, email, xp) VALUES ('" + username + "', '"+ hashed_password +"', '"+ email +"', 0);"
             success = True
@@ -231,7 +237,6 @@ class database_manager:
         return usr_data
     
     def update_username(self, student_id, new_usrnm):
-        #TODO: Add unique username validation to new user method too
         """
         Method to update the username of a student to a new, unique one
 
