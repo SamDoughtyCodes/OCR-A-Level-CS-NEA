@@ -305,3 +305,53 @@ class database_manager:
         except:  # If there is an error raised at all
             success = False
         return success
+    
+    def fetch_question_set(self, set_id):
+        """
+        Method to fetch an entire questions set
+
+        Parameters:
+            set_id (int): The ID of the question set to fetch
+
+        Returns:
+            questions (dict): The complete question set including answers
+        """
+        # Build the query to fetch all questions and answers for a set
+        query = """ SELECT Questions.id, Questions.q_text, Questions.media_src, Questions.type, Answers.id, Answers.a_text
+                FROM Questions JOIN Answers ON (Questions.id == Answers.q_id)
+                WHERE Questions.set_id == """ + str(set_id)
+        res = self.cursor.execute(query).fetchall()
+
+        # Create empty arrays to store the processed questions
+        questions = []
+        completed_ids = []
+
+        # Itterate over all results returned
+        for i in range(len(res)):
+            # Move to the next item if the current question has already been processed
+            # This is needed as questions will appear multiple times joined to other answers
+            if res[i]["Questions.id"] in completed_ids:
+                continue  # Move to next i
+
+            # Store processed answers
+            answers_arr = []
+            completed_ans_ids = []
+
+            # Itterate over results again to find answers
+            for ii in range(len(res)):
+                # If the current question is the current record, and its answer is not stored
+                if res[ii]["Questions.id"] == res[i]["Questions.id"] and res[ii]["Answers.id"] not in completed_ans_ids:
+                    answers_arr.append(res[ii]["Answers.a_text"])
+                    completed_ans_ids.append(res[ii]["Answers.id"])
+            
+            # Format the data for this specific question
+            data = {
+                "type": res[i]["Questions.type"],
+                "text": res[i]["Questions.text"],
+                "media": res[i]["Questions.media_src"],
+                "answers": answers_arr
+            }
+            questions.append(data)
+            del data  # Clear the data ready for the next iteration
+
+        return questions
