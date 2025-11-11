@@ -1,4 +1,5 @@
 from sqlite3 import connect  # Import library to connect to and alter the database
+from datetime import date  # Import library to get the current date
 
 # Quick sort functions
 def partition(arr, low_bound: int, high_bound: int):
@@ -369,3 +370,32 @@ class database_manager:
         query = "SELECT * FROM Tasks WHERE id = " + str(task_id) + ";"
         data = self.cursor.execute(query).fetchall()  # Run the query
         return data  # Return the results of the query
+
+    def fetch_completed_tasks(self, teacher_id):
+        """
+        Method to fetch all tasks past their due date for a teacher
+
+        Parametrs:
+            teacher_id (int): The ID of the teacher to fetch data for
+
+        Returns:
+            data (dict): The completed tasks to return
+        """
+        # Get the current date
+        curr_date = date.today()
+
+        # Build the query
+        query = """SELECT Tasks.set_id, Tasks.due_date
+                   FROM Tasks JOIN Classes ON (Tasks.class_id == Classes.id)
+                   WHERE (Tasks.due_date < """ + str(curr_date) + """
+                   AND Classes.teacher_id == """ + str(teacher_id) + ");"
+        
+        # Run query and use this to fetch names of sets through another query
+        task_data = self.cursor.execute(query).fetchall()
+        names = []
+        for i in range(len(query)):
+            name_query = "SELECT name FROM Q_Sets WHERE id == " + task_data[i]["Tasks.set_id"]
+            curr_name = self.cursor.execute(name_query).fetchall()
+            names.append(curr_name)
+        
+        # Add the names to each data point from the first query
