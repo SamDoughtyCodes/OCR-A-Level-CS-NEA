@@ -355,3 +355,17 @@ class database_manager:
             del data  # Clear the data ready for the next iteration
 
         return questions
+
+    def fetch_task_data(self, task_id):
+        """
+        Method to fetch all the data relevant to a specified task
+
+        Parameters:
+            task_id (int): The ID of the task to fetch data for
+
+        Returns:
+            data (dict): The data of the task that has been fetched
+        """
+        query = "SELECT * FROM Tasks WHERE id = " + str(task_id) + ";"
+        data = self.cursor.execute(query).fetchall()  # Run the query
+        return data  # Return the results of the query
