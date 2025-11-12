@@ -405,3 +405,38 @@ class database_manager:
 
         # Return the formatted due tasks
         return data
+    
+    def fetch_active_tasks(self, teacher_id):
+        """
+        Method to fetch set tasks which are within their due date for a specified teacher
+
+        Parametrs:
+            teacher_id (int): The ID of the teacher to fetch data for
+
+        Returns:
+            data (dict): The completed tasks to return
+        """
+        # Get the current date
+        curr_date = date.today()
+
+        # Build the query
+        query = """SELECT Tasks.set_id, Tasks.due_date
+                   FROM Tasks JOIN Classes ON (Tasks.class_id == Classes.id)
+                   WHERE (Tasks.due_date > """ + str(curr_date) + """
+                   AND Classes.teacher_id == """ + str(teacher_id) + ");"
+        
+        # Run query and use this to fetch names of sets through another query
+        data = self.cursor.execute(query).fetchall()
+        names = []
+        for i in range(len(data)):
+            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i]["Tasks.set_id"]
+            curr_name = self.cursor.execute(name_query).fetchall()
+            names.append(curr_name)
+        
+        # Add the names to each data point from the first query
+        for ii in range(len(data)):
+            # Create new key value pair
+            data[ii]["Q_Sets.name"] = names[ii]
+
+        # Return the formatted due tasks
+        return data
