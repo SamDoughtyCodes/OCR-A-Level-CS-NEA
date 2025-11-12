@@ -391,11 +391,17 @@ class database_manager:
                    AND Classes.teacher_id == """ + str(teacher_id) + ");"
         
         # Run query and use this to fetch names of sets through another query
-        task_data = self.cursor.execute(query).fetchall()
+        data = self.cursor.execute(query).fetchall()
         names = []
-        for i in range(len(query)):
-            name_query = "SELECT name FROM Q_Sets WHERE id == " + task_data[i]["Tasks.set_id"]
+        for i in range(len(data)):
+            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i]["Tasks.set_id"]
             curr_name = self.cursor.execute(name_query).fetchall()
             names.append(curr_name)
         
         # Add the names to each data point from the first query
+        for ii in range(len(data)):
+            # Create new key value pair
+            data[ii]["Q_Sets.name"] = names[ii]
+
+        # Return the formatted due tasks
+        return data
