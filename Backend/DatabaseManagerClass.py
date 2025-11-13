@@ -56,7 +56,8 @@ class database_manager:
             file_addr (string): The file address of the database
         """
         self.file = file_addr
-        self.cursor = connect(file_addr)
+        self.con = connect(file_addr)
+        self.cursor = self.con.cursor()
 
     def fetch_all_records(self, table: str, fields: list[str], *specifier):
         """
@@ -137,6 +138,8 @@ class database_manager:
             query = ""
             success = False
         self.cursor.execute(query)  # Run the query
+        self.con.commit()  # Commit changes
+
         return success
 
     def add_student_class_link(self, student_id, class_id):
@@ -154,6 +157,7 @@ class database_manager:
             # Create query to add new link
             query = "INSERT INTO Student_Class_Link(student_id, class_id) VALUES (" + str(student_id) + ", " + str(class_id) + ");"
             self.cursor.execute(query)  # Run query
+            self.con.commit()  # Commit changes
             success = True
         except:  # If an error is raised, the data was added unsuccessfully
             success = False
@@ -173,6 +177,7 @@ class database_manager:
         try:  # Attempt to run code
             query = "INSERT INTO Classes(name, teacher_id) VALUES ('" + class_name + "', " + str(owner_id) + ");"
             self.cursor.execute(query)  # Run query
+            self.con.commit()  # Commit changes
             success = True
         except:  # If an error is raised, the data was added unsuccessfully
             success = False
@@ -193,6 +198,7 @@ class database_manager:
         try: # Attempt to run code
             query = "INSERT INTO Tasks(set_id, due_date, class_id) VALUES (" + str(set_id) + ", " + str(due_date) + ", " + str(class_id) + ");"
             self.cursor.execute(query)  # Run the query
+            self.con.commit()  # Commit changes
             success = True  # Indicate that the code ran successfully
         except:  # If an error is raised, the data was added unsuccessfully
             success = False
