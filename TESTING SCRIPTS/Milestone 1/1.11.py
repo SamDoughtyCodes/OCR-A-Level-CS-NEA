@@ -5,6 +5,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 
 ### TEST 1.11: CHANGE PASSWORD ###
 from Backend.DatabaseManagerClass import database_manager
-db_manager = database_manager(r"../../site_data.db")
+db_manager = database_manager(r"C:\Users\Sam\Documents\Programming\Git Repos\NEA\OCR-A-Level-CS-NEA\site_data.db")
 
 db_manager.update_password(1, "873ac9ffea4dd04fa719")
