@@ -122,6 +122,12 @@ class database_manager:
         Returns:
             success (bool): Flag to indicate if the operation was successful
         """
+        # Check that the email provided is not already in use
+        existing_email = self.fetch_all_records("Students", ["id"], ["email", email])
+        if existing_email:
+            success = False
+            return success
+
         # Ensure that the username provided is unique
         existing_users = self.fetch_all_records("Students", ["username"], ["username", username])
         if existing_users:  # If the username is not unique
