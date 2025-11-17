@@ -7,5 +7,5 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 from Backend.DatabaseManagerClass import database_manager
 db_manager = database_manager(r"C:\Users\Sam\Documents\Programming\Git Repos\NEA\OCR-A-Level-CS-NEA\site_data.db")
 
-data = db_manager.fetch_student_data(1)
+data = db_manager.fetch_student_data(4)
 print(data)
