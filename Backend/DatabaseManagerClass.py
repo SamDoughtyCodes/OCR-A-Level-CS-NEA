@@ -195,17 +195,27 @@ class database_manager:
 
         Parameters:
             set_id (int): The ID of the question set that will feature in the task
-            due_date (datetime obj): DateTime object containing the due date of the task
+            due_date (str): Stores date in the format YYYY-MM-DD
             class_id (int): The ID of the class that the task is being assigned to
 
         Returns:
             success (bool): A flag to indicate if the data was added successfully
         """
         try: # Attempt to run code
-            query = "INSERT INTO Tasks(set_id, due_date, class_id) VALUES (" + str(set_id) + ", " + str(due_date) + ", " + str(class_id) + ");"
-            self.cursor.execute(query)  # Run the query
-            self.con.commit()  # Commit changes
-            success = True  # Indicate that the code ran successfully
+            # Validate due date
+            # Start by splitting due date into day, month and year
+            year = due_date[:4]
+            month = due_date[5:7]
+            day = due_date[8:]
+            due_datetime = date(year, month, day)
+            today = date.today()
+            if today < due_datetime:  # If the provided date is later than today
+                query = "INSERT INTO Tasks(set_id, due_date, class_id) VALUES (" + str(set_id) + ", " + str(due_date) + ", " + str(class_id) + ");"
+                self.cursor.execute(query)  # Run the query
+                self.con.commit()  # Commit changes
+                success = True  # Indicate that the code ran successfully
+            else:
+                success = False  # The provided date is invalid
         except:  # If an error is raised, the data was added unsuccessfully
             success = False
         return success
