@@ -295,6 +295,7 @@ class database_manager:
             # The username is now unique and ready to update
             query = "UPDATE Students SET username = '" + new_usrnm + "' WHERE id == " + str(student_id) + ";"
             self.cursor.execute(query)  # Run the query
+            self.con.commit()  # Persistently store changes in the DB
             success = True
         except:  # If an error was raised at any point
             success = False
@@ -316,6 +317,7 @@ class database_manager:
             # Create the query
             query = "UPDATE Students SET hashed_password = '" + new_hash + "' WHERE id == '" + str(student_id) + "';"
             self.cursor.execute(query)
+            self.con.commit()
             success = False
         except:  # If an error is raised at any point
             success = True
@@ -336,6 +338,7 @@ class database_manager:
             # Build and run a query to update the XP score of the student
             query = "UPDATE Students SET xp = " + str(new) + " WHERE id == " + str(student_id) + ";"
             self.cursor.execute(query)
+            self.con.commit()
             success = True  # The query ran successfully
         except:  # If there is an error raised at all
             success = False
