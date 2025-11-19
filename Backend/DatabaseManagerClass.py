@@ -243,21 +243,30 @@ class database_manager:
         usr_tbl = self.cursor.execute(query_user_tbl).fetchall()
         classes = self.cursor.execute(query_class_link).fetchall()
         submissions = self.cursor.execute(query_submissions).fetchall()
+        formatted_subs = []  # Create an empty list to store formatted submissions
 
         # Format submissions to be stored with the task names
         for submission in submissions:
-            name = self.fetch_all_records("Q_Sets", ["name"], ["id", submission["set_id"]])
-            submission["set_name"] = name  # Add a key-value pair to the dict to includ the set name for each submission
+            name = self.fetch_all_records("Q_Sets", ["name"], ["id", submission[3]])  # Index 3 is Tasks.set_id
+            sub_dict = {  # Create a dictionary for this submission
+                "id": submission[0],
+                "completion date": submission[1],
+                "score": submission[2],
+                "set id": submission[3],
+                "set name": name
+            }
+            formatted_subs.append(sub_dict)  # Add the data for this submission to the list of formatted subs
+            del sub_dict  # Delete the dictionary so it can be re-used
         
         # Format the return data
         usr_data = {
             # Personal is a dict containing the username and xp of the student
             "personal": {
-                "username": usr_tbl[0]["username"],
-                "xp": usr_tbl[0]["xp"]
+                "username": usr_tbl[0][0],  # 2nd index 0 is the username
+                "xp": usr_tbl[0][1]  # 2nd index 1 is the xp
             },
             "classes": classes,  # Data on all classes the student is in
-            "submissions": submissions  # All submission data for that student
+            "submissions": formatted_subs  # All submission data for that student
         }
 
         return usr_data
