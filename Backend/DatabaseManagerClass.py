@@ -368,7 +368,7 @@ class database_manager:
         for i in range(len(res)):
             # Move to the next item if the current question has already been processed
             # This is needed as questions will appear multiple times joined to other answers
-            if res[i]["Questions.id"] in completed_ids:
+            if res[i][0] in completed_ids:  # Index 0 is Questions.id
                 continue  # Move to next i
 
             # Store processed answers
@@ -378,15 +378,17 @@ class database_manager:
             # Itterate over results again to find answers
             for ii in range(len(res)):
                 # If the current question is the current record, and its answer is not stored
-                if res[ii]["Questions.id"] == res[i]["Questions.id"] and res[ii]["Answers.id"] not in completed_ans_ids:
-                    answers_arr.append(res[ii]["Answers.a_text"])
-                    completed_ans_ids.append(res[ii]["Answers.id"])
+                # Index 0 is Questions.id, index 4 is Answers.id and index 5 is Answers.a_text
+                if res[ii][0] == res[i][0] and res[ii][4] not in completed_ans_ids:
+                    answers_arr.append(res[ii][5])
+                    completed_ans_ids.append(res[ii][4])
             
             # Format the data for this specific question
+            # Index 3 is Questions.type, index 1 is Questions.text and index 2 is Questions.media_src
             data = {
-                "type": res[i]["Questions.type"],
-                "text": res[i]["Questions.text"],
-                "media": res[i]["Questions.media_src"],
+                "type": res[i][3],
+                "text": res[i][1],
+                "media": res[i][2],
                 "answers": answers_arr
             }
             questions.append(data)
