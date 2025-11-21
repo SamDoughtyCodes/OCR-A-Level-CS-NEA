@@ -435,7 +435,7 @@ class database_manager:
         names = []
         for i in range(len(data)):
             # Index 0 is Tasks.set_id
-            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i][0] + ";"
+            name_query = "SELECT name FROM Q_Sets WHERE id == " + str(data[i][0]) + ";"
             curr_name = self.cursor.execute(name_query).fetchall()
             names.append(curr_name)
         
@@ -476,7 +476,7 @@ class database_manager:
         names = []
         for i in range(len(data)):
             # Index 0 is Tasks.set_id
-            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i][0] + ";"
+            name_query = "SELECT name FROM Q_Sets WHERE id == " + str(data[i][0]) + ";"
             curr_name = self.cursor.execute(name_query).fetchall()
             names.append(curr_name)
         
