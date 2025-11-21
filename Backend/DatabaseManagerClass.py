@@ -431,16 +431,22 @@ class database_manager:
         
         # Run query and use this to fetch names of sets through another query
         data = self.cursor.execute(query).fetchall()
+        formated_data = []  # This will store dicts for each item
         names = []
         for i in range(len(data)):
-            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i]["Tasks.set_id"]
+            # Index 0 is Tasks.set_id
+            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i][0] + ";"
             curr_name = self.cursor.execute(name_query).fetchall()
             names.append(curr_name)
         
         # Add the names to each data point from the first query
         for ii in range(len(data)):
-            # Create new key value pair
-            data[ii]["Q_Sets.name"] = names[ii]
+            iter_data = {
+                "name": names[ii],
+                "due": data[ii][1]  # Tasks.due_date is index 1
+            }
+            formated_data.append(iter_data)  # Add the data to the formatted data
+            del iter_data  # Delete data so it can be reused next iteration
 
         # Return the formatted due tasks
         return data
@@ -466,16 +472,22 @@ class database_manager:
         
         # Run query and use this to fetch names of sets through another query
         data = self.cursor.execute(query).fetchall()
+        formated_data = []  # This will store dicts for each item
         names = []
         for i in range(len(data)):
-            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i]["Tasks.set_id"]
+            # Index 0 is Tasks.set_id
+            name_query = "SELECT name FROM Q_Sets WHERE id == " + data[i][0] + ";"
             curr_name = self.cursor.execute(name_query).fetchall()
             names.append(curr_name)
         
         # Add the names to each data point from the first query
         for ii in range(len(data)):
-            # Create new key value pair
-            data[ii]["Q_Sets.name"] = names[ii]
+            iter_data = {
+                "name": names[ii],
+                "due": data[ii][1]  # Tasks.due_date is index 1
+            }
+            formated_data.append(iter_data)  # Add the data to the formatted data
+            del iter_data  # Delete data so it can be reused next iteration
 
         # Return the formatted due tasks
         return data
