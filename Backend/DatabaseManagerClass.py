@@ -334,7 +334,7 @@ class database_manager:
         try:  # Attempt to run the code
             # Fetch the current XP score for the student
             current = self.fetch_all_records("Students", ["xp"], ["id", student_id])
-            new = current + xp_increase  # Add the new amount of xp to the existing amount
+            new = current[0][0] + xp_increase  # Add the new amount of xp to the existing amount
             # Build and run a query to update the XP score of the student
             query = "UPDATE Students SET xp = " + str(new) + " WHERE id == " + str(student_id) + ";"
             self.cursor.execute(query)
