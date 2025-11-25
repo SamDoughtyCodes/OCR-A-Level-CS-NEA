@@ -7,4 +7,4 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 from Backend.DatabaseManagerClass import database_manager
 db_manager = database_manager(r"C:\Users\Sam\Documents\Programming\Git Repos\NEA\OCR-A-Level-CS-NEA\site_data.db")
 
-db_manager.update_password(5, "873ac9ffea4dd04fa719")
+db_manager.update_password(1, "873ac9ffea4dd04fa719")
