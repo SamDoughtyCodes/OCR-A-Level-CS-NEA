@@ -14,16 +14,16 @@ def partition(arr, low_bound: int, high_bound: int):
     Returns:
         new_i (int): The index of the new pivot location
     """
-    pivot = arr[high_bound]  # Select the final element of the sublist as the pivot
+    pivot = arr[high_bound][1]  # Select the final element of the sublist as the pivot
     i = low_bound - 1  # Set a pointer beneath the first element of the sublist
     for ii in range(low_bound, high_bound):  # Iterate over the sublist
-        if arr[ii] <= pivot:  # If the current item is less than the pivot
+        if arr[ii][1] >= pivot:  # If the current item is less than the pivot
             # Increment lower pointer and swap items
             i += 1
             arr[i], arr[ii] = arr[ii], arr[i]
     
     # Swap the pivot and item above pointer
-    arr[i+1], arr[high_bound] = pivot, arr[i+1]
+    arr[i+1], arr[high_bound] = arr[high_bound], arr[i+1]
     new_i = i + 1  # Set index of new pivot
     return new_i
 
@@ -106,7 +106,7 @@ class database_manager:
                 WHERE Student_Class_Link.class_id == 
                 """ + str(class_id) + ";"
         data = self.cursor.execute(query).fetchall()  # Run the query to fetch the data
-        leaderboard = quick_sort(data, 0, len(data))  # Sort the data into ascending order
+        leaderboard = quick_sort(data, 0, len(data)-1)  # Sort the data into ascending order
         return leaderboard
 
     def create_new_user(self, user_type, username, hashed_password, email):
