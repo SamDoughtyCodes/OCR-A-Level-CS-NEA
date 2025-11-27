@@ -203,14 +203,14 @@ class database_manager:
         """
         try: # Attempt to run code
             # Validate due date
-            # Start by splitting due date into day, month and year
-            year = due_date[:4]
-            month = due_date[5:7]
-            day = due_date[8:]
+            # Split due date into day, month and year
+            year = int(due_date[:4])
+            month = int(due_date[5:7])
+            day = int(due_date[8:])
             due_datetime = date(year, month, day)
             today = date.today()
             if today < due_datetime:  # If the provided date is later than today
-                query = "INSERT INTO Tasks(set_id, due_date, class_id) VALUES (" + str(set_id) + ", " + str(due_date) + ", " + str(class_id) + ");"
+                query = "INSERT INTO Tasks(set_id, due_date, class_id) VALUES (" + str(set_id) + ", '" + str(due_date) + "', " + str(class_id) + ");"
                 self.cursor.execute(query)  # Run the query
                 self.con.commit()  # Commit changes
                 success = True  # Indicate that the code ran successfully
