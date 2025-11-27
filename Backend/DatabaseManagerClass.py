@@ -392,6 +392,7 @@ class database_manager:
                 "answers": answers_arr
             }
             questions.append(data)
+            completed_ids.append(res[i][0])
             del data  # Clear the data ready for the next iteration
 
         return questions
