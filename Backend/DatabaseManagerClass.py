@@ -427,7 +427,7 @@ class database_manager:
         # Build the query
         query = """SELECT Tasks.set_id, Tasks.due_date
                    FROM Tasks JOIN Classes ON (Tasks.class_id == Classes.id)
-                   WHERE (Tasks.due_date < """ + str(curr_date) + """
+                   WHERE (Tasks.due_date < '""" + str(curr_date) + """'
                    AND Classes.teacher_id == """ + str(teacher_id) + ");"
         
         # Run query and use this to fetch names of sets through another query
@@ -468,7 +468,7 @@ class database_manager:
         # Build the query
         query = """SELECT Tasks.set_id, Tasks.due_date
                    FROM Tasks JOIN Classes ON (Tasks.class_id == Classes.id)
-                   WHERE (Tasks.due_date > """ + str(curr_date) + """
+                   WHERE (Tasks.due_date > '""" + str(curr_date) + """'
                    AND Classes.teacher_id == """ + str(teacher_id) + ");"
         
         # Run query and use this to fetch names of sets through another query
