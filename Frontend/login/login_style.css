@@ -1,0 +1,13 @@
+body {
+    background-color: #90223A;
+}
+
+#signin_float_box {
+    background-color: white;
+    border-radius: 30px;
+    padding: 1%;
+}
+
+.flex_container {
+    display: flex;
+}
