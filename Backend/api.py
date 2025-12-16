@@ -66,5 +66,40 @@ class ExistingCredentials(BaseModel):
 # Create function for endpoint
 @app.post("/api/login")
 def login_existing(creds: ExistingCredentials):
-    pass
+    """
+    Endpoint which validates login requests for existing users
+    
+    :param creds: The credentials provided by the user logging in
+    :type creds: ExistingCredentials
+    """
+    # Determine if the user has provided an email or a username
+    usrval_type = "email" if "@" in creds.user else "username"
+
+    # Fetch correct data based on the provided email or username
+    teacher_hash_values = db_control.fetch_all_records("Teachers", ["hashed_password"], [usrval_type, creds.user])
+    student_hash_values = db_control.fetch_all_records("Students", ["hashed_password"], [usrval_type, creds.user])
+    
+    # Make sure the queries exectuted successfully (did not return error text)
+    if type(teacher_hash_values) == str or type(student_hash_values) == str:
+        return {"success": False, "msg": "Issue fetching DB data", "token": None}
+    # If there are no users matching the username/email
+    elif len(list(teacher_hash_values)) == 0 and len(list(student_hash_values)):
+        return {"success": False, "msg": "No matching users", "token": None}
+    else:  # Combine all hash values
+        usr_to_check = teacher_hash_values[0] if len(list(student_hash_values)) == 0 else student_hash_values[0]
+        usr_type = "Teacher" if len(list(student_hash_values)) == 0 else "Student"
+
+    # Check the data against provided credentials
+    if creds.hash_value == usr_to_check[0]:  # If password is correct
+        payload = {"username": creds.user, "usr_type": usr_type}
+        if usr_type == "Student":
+            # Get the student ID and fetch their XP
+            usr_id = db_control.fetch_all_records("Students", ["id"], [usrval_type, creds.user])
+            xp = db_control.fetch_student_data(usr_id)
+            payload["xp"] = xp["personal"]["xp"]
+
+        token = generate_token(payload)
+        return {"success": True, "msg": "Successful login", "token": token}
+    else: # If password is incorrect
+        return {"success": False, "msg": "Incorrect password", "token": None}
     
