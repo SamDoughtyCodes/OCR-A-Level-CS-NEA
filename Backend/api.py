@@ -103,3 +103,25 @@ def login_existing(creds: ExistingCredentials):
     else: # If password is incorrect
         return {"success": False, "msg": "Incorrect password", "token": None}
     
+# - Endpoint for new users - 
+# Create structure for credentials to be passed through
+class NewCredentials(BaseModel):
+    is_student: bool
+    email: str
+    name: str
+    hash_pass: str
+
+# Function for endpoint
+@app.post("/api/newuser")
+def login_newuser(creds: NewCredentials):
+    # Check how many users already have this username
+    usr_table = "Students" if creds.is_student else "Teachers"
+    existing = db_control.fetch_all_records(usr_table, ["username"], ["username", creds.name])
+
+    # Create unique username
+    username = creds.name + str(len(existing))
+
+    # Create account itself
+    success = db_control.create_new_user(usr_table[:-1], username, creds.hash_pass, creds.email)
+    return {"success": success}
+    
