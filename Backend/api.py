@@ -114,6 +114,12 @@ class NewCredentials(BaseModel):
 # Function for endpoint
 @app.post("/api/newuser")
 def login_newuser(creds: NewCredentials):
+    """
+    Endpoint which creates an account for a new user
+    
+    :param creds: The login credentials provided by the backend
+    :type creds: NewCredentials
+    """
     # Check how many users already have this username
     usr_table = "Students" if creds.is_student else "Teachers"
     existing = db_control.fetch_all_records(usr_table, ["username"], ["username", creds.name])
