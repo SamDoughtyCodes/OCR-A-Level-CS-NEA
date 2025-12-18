@@ -84,7 +84,7 @@ def login_existing(creds: ExistingCredentials):
         return {"success": False, "msg": "Issue fetching DB data", "token": None}
     # If there are no users matching the username/email
     elif len(list(teacher_hash_values)) == 0 and len(list(student_hash_values)):
-        return {"success": False, "msg": "No matching users", "token": None}
+        return {"success": False, "msg": "User not found", "token": None}
     else:  # Combine all hash values
         usr_to_check = teacher_hash_values[0] if len(list(student_hash_values)) == 0 else student_hash_values[0]
         usr_type = "Teacher" if len(list(student_hash_values)) == 0 else "Student"
