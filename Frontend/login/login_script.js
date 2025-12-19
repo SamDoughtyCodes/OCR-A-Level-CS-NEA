@@ -1,3 +1,12 @@
+// Function to hash data
+async function hash_func(data) {
+    const buffer = new TextEncoder().encode(data);  // Encode the data to a byte array
+    const hashBuff = await crypto.subtle.digest("SHA-256", buffer);  // Hash the message
+    const hashArr = Array.from(new Uint8Array(hashBuff));  // Generate an array of the hashvalue
+    const hashHex = hashArr.map(b => ("00" + b.toString(16)).slice(-2)).join("");  // Convert to hex array
+    return hashHex;  // Return the final value
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM is working");
     
@@ -11,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Handle button to submit the form
     const sub_butt = document.getElementById("sub_butt");
-    sub_butt.addEventListener("click", (e) => {
+    sub_butt.addEventListener("click", async (e) => {
         console.log("Submit button pressed");
         e.preventDefault();
         const error_box = document.getElementById("err_text");
@@ -25,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Generate hash value for password
-        let hash_val = "This will be hashed" // ADD THIS
+        let hash_val = await hash_func(pass);
 
         // Send data to backend endpoint
         let credentials = {"user": user, "hash_value": hash_val}
