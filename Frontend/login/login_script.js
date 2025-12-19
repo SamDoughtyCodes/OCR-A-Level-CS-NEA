@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
             data = response.json();
             if (data.success) {
                 localStorage.setItem("token", data.token);
-                window.location = "add this later"  // ADD THIS
+                // window.location = "add this later"  // ADD THIS
+                // Determine if the user is a teacher or a student
             } else {
                 error_box.innerText = data.msg;  // Output an error message
             }

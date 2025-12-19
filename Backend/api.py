@@ -56,7 +56,31 @@ def generate_token(payload: dict, expire_delta: timedelta = timedelta(hours=2)):
     encoded_jwt = jwt.encode(payload, SECRET_KEY, ENC_ALG)
     return encoded_jwt
 
+# Function to validate a token
+def validate_token(call_creds: HTTPAuthorizationCredentials = Depends(security)):
+    """
+    Function which takes a token, checks its validity and returns its payload
+    
+    :param call_creds: Credentials including the token provided
+    :type call_creds: HTTPAuthorizationCredentials
+    """
+    token = call_creds.credentials  # Extract the token
+    try:  # Attempt to access the token
+        # Decode token and extract payload
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ENC_ALG])
+        return payload
+    except JWTError:  # If the token is invalid
+        raise HTTPException(  # Raise an error
+            status_code=status.HTTP_403_FORBIDDEN,  # Set error code
+            detail="Invalid or expired token"  # Set error message
+        )
+
 # --- Endpoints ---
+# - Endpoint to validate a token -
+@app.get("/api/validate/{payload}")
+def ep_validate_token(payload: dict = Depends(validate_token)):
+    return {"payload": payload}
+
 # - Endpoint for existing users -
 # Create struct for credentials to be sent
 class ExistingCredentials(BaseModel):
