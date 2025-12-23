@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+    <title>Sign up</title>
+    <link rel="stylesheet" href="signup_style.css">
+    <script defer src="signup_script.js"></script>
+</head>
+<body>
+    <div id="signup_box" class="flex_container">
+        <div id="non_img_content" class="flex_item">
+            <h1>Create an account</h1>
+            <p id="err_text" style="color:red; outline: auto;"></p>
+            <form id="signup_form">
+                <p>Type of user:</p>
+                <input type="radio" name="rg_usr_type" id="rb_stud" value="Student">
+                <label for="rb_stud">Student</label><br>
+                <input type="radio" name="rg_usr_type" id="rb_teach" value="Teacher">
+                <label for="rb_teach">Teacher</label><br>
+                <br>
+                <label for="name_box">Full name:</label><br>
+                <input id="name_box" name="name_box" type="text"><br>
+
+                <label for="email_box">Email:</label><br>
+                <input id="email_box" name="email_box" type="email"><br>
+                <label for="pass_box">Password:</label><br>
+                <input id="pass_box" name="pass_box" type="password"><br>
+                <br>
+                <div id="pass_criteria" style="outline: auto;">
+                    Passwords must meet the following criteria:
+                    <ul>
+                        <li>8+ characters long</li>
+                        <li>Include capital letters</li>
+                        <li>Include lower case letters</li>
+                        <li>Include a special character</li>
+                    </ul>
+                </div>
+
+                <button id="sub_butt" type="submit">Create account</button>
+                <button id="back_butt" type="button">Back</button>
+            </form>
+        </div>
+        <img class="flex_item" src="../login_assets/KES_logo_transparent.png" alt="KES logo" style="width:100px;height:100px;">
+    </div>
+</body>
+</html>

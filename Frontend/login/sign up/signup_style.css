@@ -1,0 +1,17 @@
+body {
+    background-color: #90223A;
+    display: grid;
+    justify-content: center;
+}
+
+#signup_box {
+    background-color: white;
+    border-radius: 30px;
+    padding: 5%;
+    width: fit-content
+}
+
+.flex_container {
+    display: flex;
+    justify-content: center;
+}
