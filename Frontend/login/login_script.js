@@ -46,11 +46,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(credentials)
             }
         ).then(response => {  // Process the response with the following function
-            data = response.json();
+            let data = response.json();
             if (data.success) {
                 localStorage.setItem("token", data.token);
-                // window.location = "add this later"  // ADD THIS
                 // Determine if the user is a teacher or a student
+                let addr = "http://localhost:8000/api/validate/" + JSON.stringify(data);
+                fetch(addr).then(response => {  // Make API call and handle response
+                    let payload = response.json();  // Cast payload to JSON
+                    localStorage.setItem("payload", payload.payload);
+                    if (payload.usr_type == "Student") {
+                        window.location = "/Frontend/Student Area/dashboard/stud_dash.html";
+                    } else if (payload.usr_type == "Teacher") {
+                        window.location = "/Frontend/Teacher Area/dashboard/teach_dash.html";
+                    } else {
+                        console.log("Issue resolving user type");
+                    }
+                });
             } else {
                 error_box.innerText = data.msg;  // Output an error message
             }
