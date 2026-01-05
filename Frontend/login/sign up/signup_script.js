@@ -1,3 +1,12 @@
+// Function to hash data
+async function hash_func(data) {
+    const buffer = new TextEncoder().encode(data);  // Encode the data to a byte array
+    const hashBuff = await crypto.subtle.digest("SHA-256", buffer);  // Hash the message
+    const hashArr = Array.from(new Uint8Array(hashBuff));  // Generate an array of the hashvalue
+    const hashHex = hashArr.map(b => ("00" + b.toString(16)).slice(-2)).join("");  // Convert to hex array
+    return hashHex;  // Return the final value
+}
+
 // Handle pressing of the back button
 const back_butt = document.getElementById("back_butt");
 back_butt.addEventListener("click", (e) => {
@@ -48,4 +57,43 @@ acc_butt.addEventListener("click", (e) => {
         err_box.innerText = "Please ensure the password meets valid criteria!";
         return;
     }
+
+    // Format username for sending to backend
+    // Username must be concatinated if there are any spaces
+    let username = fname_box.innerText;
+    for (let i = 0; i < username.length; i++) {
+        if (username[i] == " ") {  // If there is a space
+            // Set the next character to be upper case
+            username = username.substring(0, i+1) + username[i+1].toUpperCase() + username.substring(i+2);
+        }
+    }
+    // Remove all spaces from the string
+    username = username.replace(/ /g, "");
+
+    // Format data into JSON
+    let is_usr_student = (checked_rad_butt.value == "Student");
+    let user_creds = {
+        "is_student": is_usr_student,
+        "email": email_box.innerText,
+        "name": username,
+        "hash_pass": hash_func(pword_box.innerText)
+    }
+
+    // Send data to the API
+    fetch(
+        "http://localhost:8000/api/newuser",
+        {
+            method: "POST",
+            headers: {"Content-Type": "applications/json"},
+            body: JSON.stringify(user_creds)
+        }
+    ).then(response => {
+        let json_resp = response.json();
+        if (json_resp.success) {
+            alert("Account successfully created!");
+            window.location = "/Frontend/login/login.html";
+        } else {
+            err_box.innerText = "This email is already in use!";
+        }
+    });
 });
