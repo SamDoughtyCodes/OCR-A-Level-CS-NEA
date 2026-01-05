@@ -16,3 +16,6 @@ if (token === null) {  // If no token
         }
     });
 }
+
+const usr_data = localStorage.getItem("payload");
+console.log("Token validated, username: " + usr_data.username);
