@@ -30,20 +30,20 @@ acc_butt.addEventListener("click", (e) => {
     
     // Presence check on all fields (except password)
     let is_butt_checked = (checked_rad_butt !== null);
-    let is_name_entered = (fname_box.innerText.length > 0);
-    let is_email_entered = (email_box.innerText.length > 0);
+    let is_name_entered = (fname_box.value.length > 0);
+    let is_email_entered = (email_box.value.length > 0);
 
     // If any fields are empty, return early
-    if (is_butt_checked || is_name_entered || is_email_entered) {
+    if (!is_butt_checked || !is_name_entered || !is_email_entered) {
         err_box.innerText = "Please fill in all fields!";
         return;
     }
 
     // Check password criteria
-    let pw_len_check = (pword_box.innerText.length >= 8);
+    let pw_len_check = (pword_box.value.length >= 8);
     let is_cap = false; let is_low = false; let is_spec = false;
     let specials = ["!", "?", "'", "#", "@", "(", ")", "£", "%", "*", "&"]
-    for (let char in pword_box.innerText) {
+    for (let char in pword_box.value) {
         // If the character is upper case
         if (char == char.toUpperCase()) {is_cap = true;}
         // If the character is lower case
@@ -60,7 +60,7 @@ acc_butt.addEventListener("click", (e) => {
 
     // Format username for sending to backend
     // Username must be concatinated if there are any spaces
-    let username = fname_box.innerText;
+    let username = fname_box.value;
     for (let i = 0; i < username.length; i++) {
         if (username[i] == " ") {  // If there is a space
             // Set the next character to be upper case
@@ -74,9 +74,9 @@ acc_butt.addEventListener("click", (e) => {
     let is_usr_student = (checked_rad_butt.value == "Student");
     let user_creds = {
         "is_student": is_usr_student,
-        "email": email_box.innerText,
+        "email": email_box.value,
         "name": username,
-        "hash_pass": hash_func(pword_box.innerText)
+        "hash_pass": hash_func(pword_box.value)
     }
 
     // Send data to the API

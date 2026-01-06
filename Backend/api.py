@@ -37,7 +37,6 @@ app.add_middleware(
 FILE_PATH = BASE_DIR / "definately_not_a_secret_key.txt"
 with open(FILE_PATH, "r") as f:
     SECRET_KEY = str(f.readlines())
-    print(SECRET_KEY)
 ENC_ALG = "HS256"
 security = HTTPBearer()
 
