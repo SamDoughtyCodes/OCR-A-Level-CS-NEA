@@ -43,14 +43,15 @@ acc_butt.addEventListener("click", (e) => {
     let pw_len_check = (pword_box.value.length >= 8);
     let is_cap = false; let is_low = false; let is_spec = false;
     let specials = ["!", "?", "'", "#", "@", "(", ")", "£", "%", "*", "&"]
-    for (let char in pword_box.value) {
+    for (let i = 0; i < pword_box.value.length; i++) {
         // If the character is upper case
-        if (char == char.toUpperCase()) {is_cap = true;}
+        if (pword_box.value[i] == pword_box.value[i].toUpperCase()) {is_cap = true;}
         // If the character is lower case
-        else if (char == char.toLowerCase()) {is_low = true;}
+        if (pword_box.value[i] == pword_box.value[i].toLowerCase()) {is_low = true;}
         // If the character is special
-        else if (specials.includes(char)) {is_spec = true;}
+        if (specials.includes(pword_box.value[i])) {is_spec = true;}
     }
+    console.log(pw_len_check, is_cap, is_low, is_spec);
 
     // If the password is invalid, return early
     if (!pw_len_check || !is_cap || !is_low || !is_spec) {
@@ -80,6 +81,7 @@ acc_butt.addEventListener("click", (e) => {
     }
 
     // Send data to the API
+    console.log("Reached fetch statement")
     fetch(
         "http://localhost:8000/api/newuser",
         {
