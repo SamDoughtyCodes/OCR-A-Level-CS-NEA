@@ -45,14 +45,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 headers: {"Content-Type": "applications/json"},
                 body: JSON.stringify(credentials)
             }
-        ).then(response => {  // Process the response with the following function
-            let data = response.json();
+        )
+        .then(response => response.json())  // Cast response to JSON
+        .then(data => {  // Process the response with the following function
             if (data.success) {
                 localStorage.setItem("token", data.token);
                 // Determine if the user is a teacher or a student
                 let addr = "http://localhost:8000/api/validate/" + JSON.stringify(data);
-                fetch(addr).then(response => {  // Make API call and handle response
-                    let payload = response.json();  // Cast payload to JSON
+                fetch(addr)
+                .then(response => response.json())  // Cast response to JSON
+                .then(payload => {  // Make API call and handle response
                     localStorage.setItem("payload", payload.payload);
                     if (payload.usr_type == "Student") {
                         window.location = "/Frontend/Student Area/dashboard/stud_dash.html";
