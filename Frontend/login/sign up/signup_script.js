@@ -17,7 +17,7 @@ back_butt.addEventListener("click", (e) => {
 
 // Handle account creation
 const acc_butt = document.getElementById("sub_butt");
-acc_butt.addEventListener("click", (e) => {
+acc_butt.addEventListener("click", async (e) => {
     e.preventDefault();
     console.log("Create account button pressed");
     const err_box = document.getElementById("err_text");
@@ -51,7 +51,6 @@ acc_butt.addEventListener("click", (e) => {
         // If the character is special
         if (specials.includes(pword_box.value[i])) {is_spec = true;}
     }
-    console.log(pw_len_check, is_cap, is_low, is_spec);
 
     // If the password is invalid, return early
     if (!pw_len_check || !is_cap || !is_low || !is_spec) {
@@ -77,24 +76,25 @@ acc_butt.addEventListener("click", (e) => {
         "is_student": is_usr_student,
         "email": email_box.value,
         "name": username,
-        "hash_pass": hash_func(pword_box.value)
+        "hash_pass": await hash_func(pword_box.value)
     }
 
     // Send data to the API
-    console.log("Reached fetch statement")
     fetch(
         "http://localhost:8000/api/newuser",
         {
             method: "POST",
-            headers: {"Content-Type": "applications/json"},
+            headers: {"Content-Type": "application/json"},
             body: JSON.stringify(user_creds)
         }
-    ).then(response => {
-        let json_resp = response.json();
+    ).then(response => response.json())
+    .then(json_resp => {
+        console.log(json_resp);
         if (json_resp.success) {
             alert("Account successfully created!");
             window.location = "/Frontend/login/login.html";
         } else {
+            console.log("Failed to create account");
             err_box.innerText = "This email is already in use!";
         }
     });

@@ -56,7 +56,7 @@ class database_manager:
             file_addr (string): The file address of the database
         """
         self.file = file_addr
-        self.con = connect(file_addr)
+        self.con = connect(file_addr, check_same_thread=False)
         self.cursor = self.con.cursor()
 
     def fetch_all_records(self, table: str, fields: list[str], *specifier):
@@ -85,8 +85,8 @@ class database_manager:
             
             query = "SELECT " + fields_str + " FROM " + table + where_str + ";"  # Build the query
             data = self.cursor.execute(query).fetchall()  # Run the query and save the result to data
-        except:  # If an issue arises
-            return "Issue executing query"
+        except Exception as e:  # If an issue arises
+            return f"Issue executing query: {e}"
         return data
 
     def fetch_leaderboard(self, class_id: int):
@@ -124,7 +124,9 @@ class database_manager:
         """
         # Check that the email provided is not already in use
         existing_email = self.fetch_all_records("Students", ["id"], ["email", email])
+        print(existing_email)
         if existing_email:
+            print("Email already exists")
             success = False
             return success
 
@@ -141,6 +143,7 @@ class database_manager:
             query = "INSERT INTO Teachers(username, hashed_password, email) VALUES ('"+ username +"', '"+ hashed_password +"', '"+ email +"');"
             success = True
         else:  # If the user type is invalid
+            print("Invalud user type")
             query = ""
             success = False
         self.cursor.execute(query)  # Run the query
