@@ -52,8 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.success) {
                 localStorage.setItem("token", data.token);
                 // Determine if the user is a teacher or a student
-                let addr = "http://localhost:8000/api/validate/" + JSON.stringify(data);
-                fetch(addr)
+                let addr = "http://localhost:8000/api/validate";
+                fetch(addr, {
+                    headers: {
+                        Authorization: 'Bearer ${data.token}'
+                    }
+                })
                 .then(response => response.json())  // Cast response to JSON
                 .then(payload => {  // Make API call and handle response
                     localStorage.setItem("payload", payload.payload);

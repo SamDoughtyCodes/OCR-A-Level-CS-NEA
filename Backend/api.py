@@ -9,6 +9,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import jwt, JWTError
 from datetime import datetime, timedelta, timezone
+import pytz
 
 # Self made libraries
 from DatabaseManagerClass import database_manager
@@ -50,9 +51,9 @@ def generate_token(payload: dict, expire_delta: timedelta = timedelta(hours=2)):
     :param expire_delta: The time the token is valid for, by default 2 hours
     :type expire_delta: timedelta
     """
-    expiry = datetime.now(timezone.utc) + expire_delta  # Calculate the expiry time of the token
+    expiry = (datetime.now(timezone.utc) + expire_delta).timestamp()  # Calculate the expiry time of the token
     payload.update({"expires": expiry})  # Add the expiry time to the payload
-    encoded_jwt = jwt.encode(payload, SECRET_KEY, ENC_ALG)
+    encoded_jwt = jwt.encode(payload, SECRET_KEY, algorithm=ENC_ALG)
     return encoded_jwt
 
 # Function to validate a token
@@ -63,6 +64,8 @@ def validate_token(call_creds: HTTPAuthorizationCredentials = Depends(security))
     :param call_creds: Credentials including the token provided
     :type call_creds: HTTPAuthorizationCredentials
     """
+    print(call_creds)
+    print(call_creds.credentials)
     token = call_creds.credentials  # Extract the token
     try:  # Attempt to access the token
         # Decode token and extract payload
@@ -76,7 +79,7 @@ def validate_token(call_creds: HTTPAuthorizationCredentials = Depends(security))
 
 # --- Endpoints ---
 # - Endpoint to validate a token -
-@app.get("/api/validate/{payload}")
+@app.get("/api/validate")
 def ep_validate_token(payload: dict = Depends(validate_token)):
     return {"payload": payload}
 
