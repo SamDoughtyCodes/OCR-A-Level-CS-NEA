@@ -234,15 +234,16 @@ class database_manager:
             usr_data (dict): The collated and formated data for the student
         """
         # Build queries
-        query_user_tbl = "SELECT username, xp FROM Students WHERE id == " + str(student_id) + ";"
+        query_user_tbl = "SELECT username, xp FROM Students WHERE id == " + str(student_id[0]) + ";"
         query_class_link = """SELECT Classes.id, Classes.name
                             FROM Classes JOIN Student_Class_Link ON (Classes.id == Student_Class_Link.class_id)
-                            WHERE Student_Class_Link.student_id == """ + str(student_id) + ";"
+                            WHERE Student_Class_Link.student_id == """ + str(student_id[0]) + ";"
         query_submissions = """ SELECT Submissions.id, Submissions.completion_date, Submissions.Score, Tasks.set_id
                             FROM Submissions JOIN Tasks ON (Submissions.task_id == Tasks.id)
-                            WHERE Submissions.student_id == """ + str(student_id) + ";"
+                            WHERE Submissions.student_id == """ + str(student_id[0]) + ";"
         
         # Run the queries
+        print(query_user_tbl)
         usr_tbl = self.cursor.execute(query_user_tbl).fetchall()
         classes = self.cursor.execute(query_class_link).fetchall()
         submissions = self.cursor.execute(query_submissions).fetchall()

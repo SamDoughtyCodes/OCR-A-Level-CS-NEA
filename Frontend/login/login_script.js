@@ -26,8 +26,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const error_box = document.getElementById("err_text");
 
         // Prescence check for both boxes
-        let user = document.getElementById("usr_box").innerText;
-        let pass = document.getElementById("pass_box").innerText;
+        let user = document.getElementById("usr_box").value;
+        let pass = document.getElementById("pass_box").value;
+        console.log(user, pass);
         if (user.length == 0 || pass.length == 0) {
             error_box.innerText = "Please enter all details before logging in!";
             return;  // Exit the function early
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "http://localhost:8000/api/login",
             {
                 method: "POST",
-                headers: {"Content-Type": "applications/json"},
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(credentials)
             }
         )

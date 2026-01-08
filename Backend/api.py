@@ -101,12 +101,13 @@ def login_existing(creds: ExistingCredentials):
     # Fetch correct data based on the provided email or username
     teacher_hash_values = db_control.fetch_all_records("Teachers", ["hashed_password"], [usrval_type, creds.user])
     student_hash_values = db_control.fetch_all_records("Students", ["hashed_password"], [usrval_type, creds.user])
+    print(usrval_type, teacher_hash_values, student_hash_values)
     
     # Make sure the queries exectuted successfully (did not return error text)
     if type(teacher_hash_values) == str or type(student_hash_values) == str:
         return {"success": False, "msg": "Issue fetching DB data", "token": None}
     # If there are no users matching the username/email
-    elif len(list(teacher_hash_values)) == 0 and len(list(student_hash_values)):
+    elif len(list(teacher_hash_values)) == 0 and len(list(student_hash_values)) == 0:
         return {"success": False, "msg": "User not found", "token": None}
     else:  # Combine all hash values
         usr_to_check = teacher_hash_values[0] if len(list(student_hash_values)) == 0 else student_hash_values[0]
@@ -118,7 +119,7 @@ def login_existing(creds: ExistingCredentials):
         if usr_type == "Student":
             # Get the student ID and fetch their XP
             usr_id = db_control.fetch_all_records("Students", ["id"], [usrval_type, creds.user])
-            xp = db_control.fetch_student_data(usr_id)
+            xp = db_control.fetch_student_data(usr_id[0])
             payload["xp"] = xp["personal"]["xp"]
 
         token = generate_token(payload)
