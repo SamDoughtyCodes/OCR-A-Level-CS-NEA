@@ -6,14 +6,19 @@ if (token === null) {  // If no token
     window.location = "/Frontend/login/login.html";
 } else {
     // Make API call to validate found token
-    let call_url = "http://localhost:8000/api/validate/" + token.toString();
-    fetch(call_url).then(response => {
+    let call_url = "http://localhost:8000/api/validate";
+    fetch(call_url, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then(response => {
         if (response.status === 403 || response.status === 401) {
             window.location = "/Frontend/login/login.html";
         } else {
-            let resp_payload = response.json().payload;
-            localStorage.setItem("payload", resp_payload);
+            return response.json();  // Return the promise to cast response
         }
+    }).then(json_resp => {  // Once casted, store the payload in local storage
+        localStorage.setItem("payload", JSON.stringify(json_resp.payload))
     });
 }
 

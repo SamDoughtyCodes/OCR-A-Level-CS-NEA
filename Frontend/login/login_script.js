@@ -55,15 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 let addr = "http://localhost:8000/api/validate";
                 fetch(addr, {
                     headers: {
-                        Authorization: 'Bearer ${data.token}'
+                        Authorization: `Bearer ${data.token}`
                     }
                 })
                 .then(response => response.json())  // Cast response to JSON
                 .then(payload => {  // Make API call and handle response
                     localStorage.setItem("payload", payload.payload);
-                    if (payload.usr_type == "Student") {
+                    if (payload.payload.usr_type == "Student") {
                         window.location = "/Frontend/Student Area/dashboard/stud_dash.html";
-                    } else if (payload.usr_type == "Teacher") {
+                    } else if (payload.payload.usr_type == "Teacher") {
                         window.location = "/Frontend/Teacher Area/dashboard/teach_dash.html";
                     } else {
                         console.log("Issue resolving user type");
