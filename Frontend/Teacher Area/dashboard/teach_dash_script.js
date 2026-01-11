@@ -18,9 +18,7 @@ if (token === null) {  // If no token
             return response.json();  // Return the promise to cast response
         }
     }).then(json_resp => {  // Once casted, store the payload in local storage
-        localStorage.setItem("payload", JSON.stringify(json_resp.payload))
+        localStorage.setItem("payload", JSON.stringify(json_resp.payload));
+        console.log("Token validated, username: " + json_resp.payload.username);
     });
 }
-
-const usr_data = await localStorage.getItem("payload").json();
-console.log("Token validated, username: " + usr_data.username);
