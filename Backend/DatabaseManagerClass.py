@@ -122,16 +122,17 @@ class database_manager:
         Returns:
             success (bool): Flag to indicate if the operation was successful
         """
+        # Create a variable to store the type of user (as the table name)
+        user_type_table = user_type + "s"
+
         # Check that the email provided is not already in use
-        existing_email = self.fetch_all_records("Students", ["id"], ["email", email])
-        print(existing_email)
+        existing_email = self.fetch_all_records(user_type_table, ["id"], ["email", email])
         if existing_email:
-            print("Email already exists")
             success = False
             return success
 
         # Ensure that the username provided is unique
-        existing_users = self.fetch_all_records("Students", ["username"], ["username", username])
+        existing_users = self.fetch_all_records(user_type_table, ["username"], ["username", username])
         if existing_users:  # If the username is not unique
             new_int = len(existing_users)  # Find the integer needed for uniqueness
             username += str(new_int)  # Add the integer
