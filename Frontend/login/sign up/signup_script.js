@@ -91,7 +91,7 @@ acc_butt.addEventListener("click", async (e) => {
     .then(json_resp => {
         console.log(json_resp);
         if (json_resp.success) {
-            alert("Account successfully created!");
+            alert(`Your account was successfully created!\nUsername: ${json_resp.username}\nPlease remember this and your password!`);
             window.location = "/Frontend/login/login.html";
         } else {
             console.log("Failed to create account");

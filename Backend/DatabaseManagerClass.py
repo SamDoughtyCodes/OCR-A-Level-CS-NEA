@@ -109,7 +109,7 @@ class database_manager:
         leaderboard = quick_sort(data, 0, len(data)-1)  # Sort the data into ascending order
         return leaderboard
 
-    def create_new_user(self, user_type, username, hashed_password, email):
+    def create_new_user(self, user_type, username, hashed_password, email) -> tuple:
         """
         Method to persistently store a new user within the database given pre-validated data
 
@@ -129,7 +129,7 @@ class database_manager:
         existing_email = self.fetch_all_records(user_type_table, ["id"], ["email", email])
         if existing_email:
             success = False
-            return success
+            return (success, None)
 
         # Ensure that the username provided is unique
         existing_users = self.fetch_all_records(user_type_table, ["username"], ["username", username])
@@ -150,7 +150,7 @@ class database_manager:
         self.cursor.execute(query)  # Run the query
         self.con.commit()  # Commit changes
 
-        return success
+        return (success, username)
 
     def add_student_class_link(self, student_id, class_id):
         """

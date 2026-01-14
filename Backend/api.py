@@ -152,6 +152,6 @@ def login_newuser(creds: NewCredentials):
     username = creds.name
 
     # Create account itself
-    success = db_control.create_new_user(usr_type, username, creds.hash_pass, creds.email)
-    return {"success": success}
+    (success, unique_user) = db_control.create_new_user(usr_type, username, creds.hash_pass, creds.email)
+    return {"success": success, "username": unique_user}
     
