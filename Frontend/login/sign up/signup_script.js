@@ -15,6 +15,25 @@ back_butt.addEventListener("click", (e) => {
     window.location = "/Frontend/login/login.html";
 });
 
+// Handle viewing password
+const view_butt = document.getElementById("view_pass_butt");
+const pass_inp = document.getElementById("pass_box");
+view_butt.innerText = "View password";
+let pass_hidden = true;
+view_butt.addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("Viewing/hiding password");
+    if (pass_hidden) {  // If the password needs to be revealed
+        pass_inp.type = "text";
+        view_butt.innerText = "Hide Password";
+        pass_hidden = false;
+    } else {  // If the password needs to be hidden
+        pass_inp.type = "password";
+        view_butt.innerText = "View Passowrd";
+        pass_hidden = true;
+    }
+})
+
 // Handle account creation
 const acc_butt = document.getElementById("sub_butt");
 acc_butt.addEventListener("click", async (e) => {
