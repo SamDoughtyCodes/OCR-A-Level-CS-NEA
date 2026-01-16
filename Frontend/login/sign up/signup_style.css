@@ -1,14 +1,27 @@
 body {
     background-color: #90223A;
+    background-image: url("https://insp-kingedward.s3.amazonaws.com/uploads/home_header/2_14_m.jpg?t=1676375082");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+
     display: grid;
     justify-content: center;
+    height: 100vh;
+    margin: 0;
+
+    font-family: "Gowun Dodum", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
 }
 
 #signup_box {
     background-color: white;
     border-radius: 30px;
     padding: 5%;
-    width: fit-content
+    width: fit-content;
+    height: fit-content;
 }
 
 .flex_container {
