@@ -155,3 +155,15 @@ def login_newuser(creds: NewCredentials):
     (success, unique_user) = db_control.create_new_user(usr_type, username, creds.hash_pass, creds.email)
     return {"success": success, "username": unique_user}
     
+
+# - Endpoint for fetching student data -
+@app.get("/api/stud_data")
+def fetch_stud_data(id: int):
+    """
+    Endpoint to fetch all of the data for a specified student
+    
+    :param id: The ID of the student to fetch data for
+    :type id: int
+    """
+    data = db_control.fetch_student_data(id)
+    return data
