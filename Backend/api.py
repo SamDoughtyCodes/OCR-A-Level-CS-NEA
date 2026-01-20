@@ -157,7 +157,7 @@ def login_newuser(creds: NewCredentials):
     
 
 # - Endpoint for fetching student data -
-@app.get("/api/stud_data")
+@app.get("/api/stud_data/{id}")
 def fetch_stud_data(id: int):
     """
     Endpoint to fetch all of the data for a specified student
