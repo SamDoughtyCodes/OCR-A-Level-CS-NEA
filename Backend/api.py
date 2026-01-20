@@ -167,3 +167,90 @@ def fetch_stud_data(id: int):
     """
     data = db_control.fetch_student_data(id)
     return data
+
+# - Endpoint for updating a username -
+class NewUsername(BaseModel):
+    id: int  # The ID of the student to update the username of
+    name: str  # The new username to use
+
+@app.post("api/students/upd_user")
+def update_username(data: NewUsername):
+    """
+    Endpoint to change the username of a specified student
+    
+    :param data: Class to store data to update
+    :type data: NewUsername
+    """
+    res = db_control.update_username(data.id, data.name)
+    return res  # Return if the method executed successfully or not
+
+# - Endpoint for updating a password -
+class NewPass(BaseModel):
+    id: int  # The ID of the student to update the password of
+    hash: str  # Hash value of the new password
+
+@app.post("api/students/upd_pass")
+def update_password(data: NewPass):
+    """
+    Endpoint to change a user's password
+    
+    :param data: The data being updated
+    :type data: NewPass
+    """
+    res = db_control.update_password(data.id, data.hash)
+    return res  # Return if the method executed successfully or not
+
+# - Endpoint to create a new task -
+class NewTask(BaseModel):
+    set_id: int  # The ID of the question set being used
+    due: str  # The due date, formatted as a string YYYY-MM-DD
+    class_id: int  # The ID of the class which the task is for
+
+@app.post("api/tasks/new")
+def create_task(data: NewTask):
+    """
+    Endpoint which recieves data about a new task and writes this
+    to the database
+    
+    :param data: The data needed to store the task
+    :type data: NewTask
+    """
+    res = db_control.crete_new_task(data.set_id, data.due, data.class_id)
+    return res  # Return if the method executed successfully or not
+
+# - Endpoint to create a new class -
+class NewClass(BaseModel):
+    name: str  # The name of the class (e.g. Y7Maths)
+    owner_id: int  # The ID of the teacher who owns the class
+
+@app.post("api/classes/new")
+def create_class(data: NewClass):
+    """
+    Endpoint which persistently stores a new class to the database
+    
+    :param data: The data needed to create the class
+    :type data: NewClass
+    """
+    res = db_control.create_new_class(data.name, data.owner_id)
+    return res  # Return if the method executed successfully or not
+
+# - Endpoint to add students to a class
+class NewStuds(BaseModel):
+    class_id: int  # ID of the class to add the students to
+    stud_ids: list[int]  # List of IDs of students to add to the class
+
+@app.post("api/classes/add")
+def add_students(data: NewStuds):
+    """
+    Endpoint to add students to a class
+    
+    :param data: Stores the class to add to and the studnent IDs to add
+    :type data: NewStuds
+    """
+    success = True  # Keep track of if any additions have failed
+    for id in NewStuds.stud_ids:  # Iterate over all students to add
+        # Add the student to the class, and compare the result
+        if not db_control.add_student_class_link(id, NewStuds.class_id):
+            success = False  # If failed, set flag
+    
+    return success
