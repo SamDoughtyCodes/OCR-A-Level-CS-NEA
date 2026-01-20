@@ -173,7 +173,7 @@ class NewUsername(BaseModel):
     id: int  # The ID of the student to update the username of
     name: str  # The new username to use
 
-@app.post("api/students/upd_user")
+@app.post("/api/students/upd_user")
 def update_username(data: NewUsername):
     """
     Endpoint to change the username of a specified student
