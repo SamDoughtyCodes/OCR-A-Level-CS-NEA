@@ -193,7 +193,7 @@ class database_manager:
             success = False
         return success
 
-    def crete_new_task(self, set_id, due_date, class_id):
+    def crete_new_task(self, set_id, due_date, class_id, name):
         """
         Method to persistently write a new task to the database
 
@@ -214,7 +214,7 @@ class database_manager:
             due_datetime = date(year, month, day)
             today = date.today()
             if today < due_datetime:  # If the provided date is later than today
-                query = "INSERT INTO Tasks(set_id, due_date, class_id) VALUES (" + str(set_id) + ", '" + str(due_date) + "', " + str(class_id) + ");"
+                query = "INSERT INTO Tasks(set_id, due_date, class_id, name) VALUES (" + str(set_id) + ", '" + str(due_date) + "', " + str(class_id) + ", '" + str(name) + "');"
                 self.cursor.execute(query)  # Run the query
                 self.con.commit()  # Commit changes
                 success = True  # Indicate that the code ran successfully
