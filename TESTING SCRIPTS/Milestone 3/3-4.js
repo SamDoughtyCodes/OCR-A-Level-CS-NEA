@@ -1,7 +1,7 @@
 let info = {
-    set_id: 0,
+    set_id: 1,
     due: "20260705",
-    class_id: 0,
+    class_id: 1,
     name: "test"
 }
 

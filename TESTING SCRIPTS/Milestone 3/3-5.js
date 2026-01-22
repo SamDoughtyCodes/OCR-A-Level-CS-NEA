@@ -1,6 +1,6 @@
 let info = {
     name: "testclass",
-    owner_id: 0
+    owner_id: 1
 }
 
 fetch("http://localhost:8000/api/classes/new", {

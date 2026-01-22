@@ -1,5 +1,5 @@
 let info = {
-    class_id: 0,
+    class_id: 1,
     stud_ids: [1]
 };
 
