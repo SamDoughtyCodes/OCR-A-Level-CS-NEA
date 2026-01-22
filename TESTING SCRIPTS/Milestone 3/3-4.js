@@ -1,5 +1,12 @@
 let info = {
     set_id: 0,
     due: "20260705",
-    class_id: //TODO: Add names to tasks
+    class_id: 0,
+    name: "test"
 }
+
+fetch("http://localhost:8000/api/tasks/new", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(info)
+}).then(res => res.json()).then(j_res => console.log(j_res));
