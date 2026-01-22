@@ -309,7 +309,7 @@ class database_manager:
 
     def update_password(self, student_id, new_hash):
         """ 
-        Methof to update the password of a student to a new hash value
+        Method to update the password of a student to a new hash value
 
         Parameters:
             student_id (int): The ID of the student to update the password of
