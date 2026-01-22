@@ -122,7 +122,7 @@ def login_existing(creds: ExistingCredentials):
         if usr_type == "Student":
             # Get the student ID and fetch their XP
             usr_id = db_control.fetch_all_records("Students", ["id"], [usrval_type, creds.user])
-            xp = db_control.fetch_student_data(usr_id[0])
+            xp = db_control.fetch_student_data(usr_id[0][0])
             payload["xp"] = xp["personal"]["xp"]
 
         token = generate_token(payload)
