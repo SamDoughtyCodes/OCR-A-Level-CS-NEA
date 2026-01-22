@@ -205,6 +205,7 @@ class NewTask(BaseModel):
     set_id: int  # The ID of the question set being used
     due: str  # The due date, formatted as a string YYYY-MM-DD
     class_id: int  # The ID of the class which the task is for
+    name: str  # The name of the task which will be created
 
 @app.post("api/tasks/new")
 def create_task(data: NewTask):
@@ -215,7 +216,7 @@ def create_task(data: NewTask):
     :param data: The data needed to store the task
     :type data: NewTask
     """
-    res = db_control.crete_new_task(data.set_id, data.due, data.class_id)
+    res = db_control.crete_new_task(data.set_id, data.due, data.class_id, data.name)
     return res  # Return if the method executed successfully or not
 
 # - Endpoint to create a new class -
