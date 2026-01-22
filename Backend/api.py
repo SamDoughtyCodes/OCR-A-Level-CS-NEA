@@ -189,7 +189,7 @@ class NewPass(BaseModel):
     id: int  # The ID of the student to update the password of
     hash: str  # Hash value of the new password
 
-@app.post("api/students/upd_pass")
+@app.post("/api/students/upd_pass")
 def update_password(data: NewPass):
     """
     Endpoint to change a user's password
@@ -207,7 +207,7 @@ class NewTask(BaseModel):
     class_id: int  # The ID of the class which the task is for
     name: str  # The name of the task which will be created
 
-@app.post("api/tasks/new")
+@app.post("/api/tasks/new")
 def create_task(data: NewTask):
     """
     Endpoint which recieves data about a new task and writes this
@@ -224,7 +224,7 @@ class NewClass(BaseModel):
     name: str  # The name of the class (e.g. Y7Maths)
     owner_id: int  # The ID of the teacher who owns the class
 
-@app.post("api/classes/new")
+@app.post("/api/classes/new")
 def create_class(data: NewClass):
     """
     Endpoint which persistently stores a new class to the database
@@ -240,7 +240,7 @@ class NewStuds(BaseModel):
     class_id: int  # ID of the class to add the students to
     stud_ids: list[int]  # List of IDs of students to add to the class
 
-@app.post("api/classes/add")
+@app.post("/api/classes/add")
 def add_students(data: NewStuds):
     """
     Endpoint to add students to a class
