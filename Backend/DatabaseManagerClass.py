@@ -209,8 +209,8 @@ class database_manager:
             # Validate due date
             # Split due date into day, month and year
             year = int(due_date[:4])
-            month = int(due_date[5:7])
-            day = int(due_date[8:])
+            month = int(due_date[4:6])
+            day = int(due_date[6:])
             due_datetime = date(year, month, day)
             today = date.today()
             if today < due_datetime:  # If the provided date is later than today
@@ -219,8 +219,10 @@ class database_manager:
                 self.con.commit()  # Commit changes
                 success = True  # Indicate that the code ran successfully
             else:
+                print("Failed due to invalid date")
                 success = False  # The provided date is invalid
-        except:  # If an error is raised, the data was added unsuccessfully
+        except Exception as e:  # If an error is raised, the data was added unsuccessfully
+            print(e)
             success = False
         return success
 
