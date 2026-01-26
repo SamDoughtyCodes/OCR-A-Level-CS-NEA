@@ -249,9 +249,9 @@ def add_students(data: NewStuds):
     :type data: NewStuds
     """
     success = True  # Keep track of if any additions have failed
-    for id in NewStuds.stud_ids:  # Iterate over all students to add
+    for id in data.stud_ids:  # Iterate over all students to add
         # Add the student to the class, and compare the result
-        if not db_control.add_student_class_link(id, NewStuds.class_id):
+        if not db_control.add_student_class_link(id, data.class_id):
             success = False  # If failed, set flag
     
     return success
