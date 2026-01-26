@@ -1,6 +1,6 @@
 let info = {
     id: 1,
-    hash: "edehfue77762"
+    hash: "this is another password!"
 }
 
 fetch("http://localhost:8000/api/students/upd_pass", {

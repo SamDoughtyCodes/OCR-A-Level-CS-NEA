@@ -325,9 +325,9 @@ class database_manager:
             query = "UPDATE Students SET hashed_password = '" + new_hash + "' WHERE id == '" + str(student_id) + "';"
             self.cursor.execute(query)
             self.con.commit()
-            success = False
-        except:  # If an error is raised at any point
             success = True
+        except:  # If an error is raised at any point
+            success = False
         return success
 
     def update_xp(self, student_id, xp_increase):

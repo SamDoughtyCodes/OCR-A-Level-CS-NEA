@@ -1,6 +1,6 @@
 let info = {
     id: 1,
-    name: "ReeseHe1"
+    name: "Chesburger"
 }
 
 fetch("http://localhost:8000/api/students/upd_user", {
