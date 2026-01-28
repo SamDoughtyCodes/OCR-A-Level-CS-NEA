@@ -24,7 +24,7 @@ db_control = database_manager(str(DB_PATH))
 
 # --- Control of access to API ---
 # The web pages which can make calls to the API
-origins = ["http://localhost:3000", "127.0.0.1:3000"]
+origins = ["http://localhost:3000", "http://127.0.0.1:3000"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,  # Set the pages which can make requests
