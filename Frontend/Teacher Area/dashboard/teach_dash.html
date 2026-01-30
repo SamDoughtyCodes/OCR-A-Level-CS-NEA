@@ -14,16 +14,32 @@
 
 <!-- Main body of the page -->
 <main>
-    <p>This is the main body of the page</p>
+    <!-- Flex container to store overview and quick actions -->
+    <div id="ov_qa_flex_cont">
+        <!-- OVERVIEW TAB -->
+        <div id="overview_tab">
+            <h2>Overview</h2>
+            <div id="overview_flex_cont">
+                <div id="a_tasks" class="overview_item">ph<br>Active Tasks</div>
+                <div id="agv_score" class="overview_item">ph%<br>Average Student Score</div>
+                <div id="ot_tasks" class="overview_item">ph%<br>Submitted On Time</div>
+            </div>
+            <button id="overview_sm_butt">See more</button>
+        </div>
 
-    <!-- OVERVIEW TAB -->
-    <div id="overview_tab"></div>
-
-    <!-- QUICK ACTIONS TAB -->
-    <div id="q_acts_tab"></div>
+        <!-- QUICK ACTIONS TAB -->
+        <div id="q_acts_tab">
+            <h2>Quick actions</h2>
+            <button id="qacts_tasks_butt">Tasks</button><br>
+            <button id="qacts_class_butt">Classes</button>
+        </div>
+    </div>
 
     <!-- TASKS TO REVIEW TAB -->
-    <div id="tasks_tab"></div>
+    <div id="tasks_tab">
+        <h2>Tasks to review</h2>
+        <div id="tasks_content"></div>
+    </div>
 </main>
 </body>
 </html>
