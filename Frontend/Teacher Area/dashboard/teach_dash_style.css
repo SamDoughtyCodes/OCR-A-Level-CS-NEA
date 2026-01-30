@@ -12,6 +12,11 @@ header {
     padding: 10px;
 }
 
+main {
+    display: grid;
+    place-items: center;
+}
+
 #logo_img {
     display: block;
     margin-left: auto;
@@ -20,6 +25,7 @@ header {
 #ov_qa_flex_cont {
     display: flex;
     padding: 10px;
+    justify-content: center;
 }
 
 #overview_tab {
@@ -39,11 +45,21 @@ header {
     margin: 1%;
 }
 
+#ov_butt_cont {
+    display: grid;
+    place-items: center;
+}
+
 #q_acts_tab {
     background-color: lightgreen;
     padding: 10px;
     border-radius: 30px;
     margin: 1%;
+}
+
+#q_acts_butts {
+    display: grid;
+    place-items: center;
 }
 
 #tasks_tab {
