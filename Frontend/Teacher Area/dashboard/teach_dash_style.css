@@ -68,3 +68,9 @@ main {
     border-radius: 30px;
     margin: 1%;
 }
+
+button {
+    background-color: lightblue;
+    border-radius: 10px;
+    font-size: 20px;
+}
