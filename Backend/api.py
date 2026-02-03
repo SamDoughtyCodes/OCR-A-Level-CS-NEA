@@ -267,3 +267,41 @@ def fetch_active_tasks(user: str):
     teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])
     res = db_control.fetch_active_tasks(teach_id)
     return res  # Return the data to the frontend
+
+# - Endpoint to fetch all strudent data for a teacher -
+@app.get("/api/submissions/{user}")
+def fetch_all_subs(user: str):
+    """
+    Endpoint to fetch all submissions and their data for a teacher
+    
+    :param user: The teacher to fetch all submissions for
+    :type user: str
+    """
+    # Find ID of teacher
+    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])
+    # Get class IDs for all classes owned by teacher
+    classes = db_control.fetch_all_records("Classes", ["id"], ["teacher_id", teach_id[0]])
+    # Get task IDs for all classes
+    task_ids = []
+    for c in classes:
+        task_ids.append(db_control.fetch_all_records("Tasks", ["id"], ["class_id", c]))
+    # Get submissions
+    subs = []
+    for id in task_ids:
+        subs.append(db_control.fetch_all_records("Submissions", ["*"], ["class_id", id]))
+
+    # Format submissions
+    formatted_subs = []
+    for sub in subs:
+        struct = {
+            "id": sub[0],
+            "student_id": sub[1],
+            "task_id": sub[2],
+            "completion_date": sub[3],
+            "score": sub[4]
+        }
+        formatted_subs.append(struct)
+        del struct
+
+    # Return data to frontend in dict/JSON format
+    return formatted_subs

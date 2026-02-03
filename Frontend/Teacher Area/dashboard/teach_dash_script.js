@@ -1,3 +1,12 @@
+// Function to find the average score of a class
+function avg(scores) {
+    let sum = 0;
+    scores.forEach(element => {
+        sum += parseFloat(element);
+    });
+    return (sum / scores.length);
+}
+
 // --- Validate token ---
 let token = localStorage.getItem("token");  // Fetch the token from storage
 // Check if a token was found
@@ -28,11 +37,16 @@ if (token === null) {  // If no token
         console.log(usr_data, username);
         header_text.innerText = `Welcome, ${username}`;
 
-        // Active tasks text
-        const active_text = document.getElementById("a_tasks");
-        fetch(`http://localhost:8000/api/tasks/active/${username}`).then(resp => resp.json()).then(j_resp => {
-            let num_tasks = j_resp.length;
-            active_text.innerHTML = `${String(num_tasks)}<br>Active Tasks`;
-        });
+        //TODO: FIX THIS, ISSUE WITH PASSING OF ID ON BACKEND
+        // // Active tasks text
+        // const active_text = document.getElementById("a_tasks");
+        // fetch(`http://localhost:8000/api/tasks/active/${username}`).then(resp => resp.json()).then(j_resp => {
+        //     let num_tasks = j_resp.length;
+        //     active_text.innerHTML = `${String(num_tasks)}<br>Active Tasks`;
+        // });
+
+        // Average Student Score
+        // Get the scores for all submissions for that teacher
+        fetch()
     });
 }
