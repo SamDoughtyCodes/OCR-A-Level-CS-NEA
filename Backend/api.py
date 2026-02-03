@@ -64,8 +64,6 @@ def validate_token(call_creds: HTTPAuthorizationCredentials = Depends(security))
     :param call_creds: Credentials including the token provided
     :type call_creds: HTTPAuthorizationCredentials
     """
-    print(call_creds)
-    print(call_creds.credentials)
     token = call_creds.credentials  # Extract the token
     try:  # Attempt to access the token
         # Decode token and extract payload
@@ -255,3 +253,17 @@ def add_students(data: NewStuds):
             success = False  # If failed, set flag
     
     return success
+
+# - Endpoint to fetch all active tasks for a teacher -
+@app.get("/api/tasks/active/{user}")
+def fetch_active_tasks(user: str):
+    """
+    Endpoint which accesses all of the active tasks for a teacher
+    
+    :param teach_id: The ID of the teacher to fetch data for
+    :type teach_id: int
+    """
+    # Fetch the relevant data
+    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])
+    res = db_control.fetch_active_tasks(teach_id)
+    return res  # Return the data to the frontend

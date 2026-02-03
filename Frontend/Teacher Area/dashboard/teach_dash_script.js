@@ -21,12 +21,18 @@ if (token === null) {  // If no token
         localStorage.setItem("payload", JSON.stringify(json_resp.payload));
         console.log("Token validated, username: " + json_resp.payload.username);
         
-        // --- Replace placeholder texts ---
         // Header text
         const header_text = document.getElementById("welc_text");
         const usr_data = JSON.parse(localStorage.getItem("payload"));
         const username = usr_data.username;
         console.log(usr_data, username);
         header_text.innerText = `Welcome, ${username}`;
+
+        // Active tasks text
+        const active_text = document.getElementById("a_tasks");
+        fetch(`http://localhost:8000/api/tasks/active/${username}`).then(resp => resp.json()).then(j_resp => {
+            let num_tasks = j_resp.length;
+            active_text.innerHTML = `${String(num_tasks)}<br>Active Tasks`;
+        });
     });
 }
