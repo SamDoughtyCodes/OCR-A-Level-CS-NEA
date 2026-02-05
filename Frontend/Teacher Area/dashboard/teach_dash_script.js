@@ -48,13 +48,49 @@ if (token === null) {  // If no token
         // Average Student Score
         // Get the scores for all submissions for that teacher
         const avg_text = document.getElementById("avg_score");
-        fetch(`http://localhost:8000/api/submissions/${username}`).then(resp => resp.json()).then(j_resp => {
+        fetch(`http://localhost:8000/api/submissions/${username}`).then(resp => resp.json()).then(sub_j_resp => {
             let scores = [];  // Declare an empty array to store all the scores 
-            j_resp.forEach(submission => {  // Iterate over each submission returned from the API
+            sub_j_resp.forEach(submission => {  // Iterate over each submission returned from the API
                 scores.push(submission.score);  // Add each score to the array
             });
             let avg_score = avg(scores);  // Calculate the average score
             avg_text.innerHTML = `${String(avg_score)}%<br>Average Student Score`;  // Update the dashboard text with the score
+
+        
+            // Percentage of scores submitted on time
+            // Get the text element needed
+            const ot_text = document.getElementById("ot_tasks");
+            // Get all tasks for the user to compare to all submissions
+            fetch(`http://localhost:8000/api/tasks/all/${username}`).then(resp => resp.json()).then(task_j_resp => {
+                let ot_sum = 0;  // Sum of the number of on time submissions
+                sub_j_resp.forEach(submission => {  // Iterate over every submission
+                    let task_id = submission.task_id;  // Get the task ID to search for
+                    for (let task of task_j_resp) {  // Iterate over tasks
+                        let c_task_id = task.id;  // Get the task ID of the current task
+                        // If the submission and task id match, check if it was submitted on time
+                        if (c_task_id == task_id) {
+                            // Get the submission date
+                            let db_sub_date = submission.completion_date;
+                            let sub_date = new Date(`${db_sub_date.slice(0, 4)}-${db_sub_date.slice(4, 6)}-${db_sub_date.slice(6)}`);
+
+                            // Get the due date for the task
+                            let db_due_date = task.due_date;
+                            let due_date = new Date(`${db_due_date.slice(0, 4)}-${db_due_date.slice(4, 6)}-${db_due_date.slice(6)}`);
+
+                            // Compare dates
+                            if (due_date >= sub_date) { // If submitted on time
+                                ot_sum += 1;
+                            }
+
+                            // As task for sub has been found, don't check any more tasks
+                            break;
+                        }
+                    }
+                });
+
+                let perc_ot = (ot_sum / sub_j_resp.length) * 100;
+                ot_text.innerHTML = `${String(perc_ot)}%<br>Submitted On Time`;
+            });
         });
     });
 }
