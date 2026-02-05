@@ -47,6 +47,14 @@ if (token === null) {  // If no token
 
         // Average Student Score
         // Get the scores for all submissions for that teacher
-        fetch()
+        const avg_text = document.getElementById("avg_score");
+        fetch(`http://localhost:8000/api/submissions/${username}`).then(resp => resp.json()).then(j_resp => {
+            let scores = [];  // Declare an empty array to store all the scores 
+            j_resp.forEach(submission => {  // Iterate over each submission returned from the API
+                scores.push(submission.score);  // Add each score to the array
+            });
+            let avg_score = avg(scores);  // Calculate the average score
+            avg_text.innerHTML = `${String(avg_score)}%<br>Average Student Score`;  // Update the dashboard text with the score
+        });
     });
 }
