@@ -74,3 +74,9 @@ button {
     border-radius: 10px;
     font-size: 20px;
 }
+
+.review_task {
+    border: auto;
+    border-radius: 30px;
+    padding: 10px;
+}

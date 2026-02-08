@@ -293,6 +293,20 @@ def fetch_active_tasks(user: str):
     res = db_control.fetch_active_tasks(teach_id)
     return res  # Return the data to the frontend
 
+# - Endpoint to fetch all completed tasks for a teacher
+@app.get("/api/tasks/complete/{user}")
+def fetch_complete_tasks(user: str):
+    """
+    Endpoint which fetches all tasks which are past due date for a teacher
+    
+    :param user: The username of the teacher to use
+    :type user: str
+    """
+    # Fetch the relevant data
+    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])
+    res = db_control.fetch_completed_tasks(teach_id)
+    return res  # Return the data to the frontend
+
 # - Endpoint to fetch all strudent data for a teacher -
 @app.get("/api/submissions/{user}")
 def fetch_all_subs(user: str):

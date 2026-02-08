@@ -432,7 +432,7 @@ class database_manager:
         curr_date = date.today()
 
         # Build the query
-        query = """SELECT Tasks.set_id, Tasks.due_date
+        query = """SELECT Tasks.set_id, Tasks.due_date, Classes.name
                    FROM Tasks JOIN Classes ON (Tasks.class_id == Classes.id)
                    WHERE (Tasks.due_date < '""" + str(curr_date) + """'
                    AND Classes.teacher_id == """ + str(teacher_id) + ");"
@@ -451,7 +451,8 @@ class database_manager:
         for ii in range(len(data)):
             iter_data = {
                 "name": names[ii],
-                "due": data[ii][1]  # Tasks.due_date is index 1
+                "due": data[ii][1],  # Tasks.due_date is index 1
+                "class_name": data[ii][2]  # Classes.name is index 2
             }
             formated_data.append(iter_data)  # Add the data to the formatted data
             del iter_data  # Delete data so it can be reused next iteration

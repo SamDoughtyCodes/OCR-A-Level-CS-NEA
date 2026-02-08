@@ -37,7 +37,7 @@ if (token === null) {  // If no token
         console.log(usr_data, username);
         header_text.innerText = `Welcome, ${username}`;
 
-        //TODO: FIX THIS, ISSUE WITH PASSING OF ID ON BACKEND
+        //TODO: FIX THIS, ISSUE WITH PASSING OF ID ON BACKEND, CUASES FATAL SERVER ERROR
         // // Active tasks text
         // const active_text = document.getElementById("a_tasks");
         // fetch(`http://localhost:8000/api/tasks/active/${username}`).then(resp => resp.json()).then(j_resp => {
@@ -91,6 +91,33 @@ if (token === null) {  // If no token
                 let perc_ot = (ot_sum / sub_j_resp.length) * 100;
                 ot_text.innerHTML = `${String(perc_ot)}%<br>Submitted On Time`;
             });
+        });
+
+        // Output completed tasks
+        // Get the div which will contain output
+        const to_review_div = document.getElementById("tasks_content");
+        // Get all completed tasks
+        fetch(`http://localhost:8000/api/tasks/complete/${username}`).then(resp => resp.json()).then(review_j_resp => {
+            // Format each task into a html block
+            all_html = [];
+            review_j_resp.forEach(task => {
+                // Get info required to output
+                let class_name = task.class_name;
+                let task_name = task.name;
+                let due_date = new Date(`${task.due.slice(0, 4)}-${task.due.slice(4, 6)}-${task.due.slice(6)}`);
+
+                // Format task into html
+                let html = `
+                    <div class="review_task">
+                        <p>${class_name}</p><br>
+                        <p>${task_name}</p><br>
+                        <p>Due ${due_date.toString()}<p>
+                    </div>
+                `;
+                all_html.push(html);
+            });
+            // Set contnets of div to be the tasks due
+            to_review_div.innerHTML = all_html.join(" ");
         });
     });
 }
