@@ -7,6 +7,31 @@ function avg(scores) {
     return (sum / scores.length);
 }
 
+// Funtion to access the task to review and redirect to new page
+function comp_task_redirect(butt) {
+    let butt_html = butt.innerHTML;
+
+    // Iterate over the contents to get the class name and task name
+    let class_name = null;
+    let task_name = null;
+    let tn_start_i = null;  // Variable to store the index of the start of the task name
+    for (let i = 3; i < butt_html.length - 2; i++) {
+        // Get the class name and the character where the task name begins
+        if (butt_html.slice(i, i+4) == "</p>") {
+            class_name = butt_html.slice(3, i);
+            tn_start_i = i + 11;  // Holds the first character of the task name
+        }
+    }
+    for (let ii = tn_start_i; ii < butt_html.length - 2; ii++) {
+        if (butt_html.slice(ii, ii+4) == "</p>") {
+            task_name = butt_html.slice(tn_start_i, ii);
+        }
+    }
+    let data = {"class": class_name, "task": task_name};
+    localStorage.setItem("ttr", JSON.stringify(data));
+    window.location = "/Frontend/Teacher Area/tasks/tasks.html";
+}
+
 // --- Validate token ---
 let token = localStorage.getItem("token");  // Fetch the token from storage
 // Check if a token was found
@@ -108,11 +133,11 @@ if (token === null) {  // If no token
 
                 // Format task into html
                 let html = `
-                    <div class="review_task">
+                    <button class="review_task" onclick="comp_task_redirect(this)">
                         <p>${class_name}</p><br>
                         <p>${task_name}</p><br>
                         <p>Due ${due_date.toString()}<p>
-                    </div>
+                    </button>
                 `;
                 all_html.push(html);
             });
@@ -121,3 +146,25 @@ if (token === null) {  // If no token
         });
     });
 }
+
+// - Event Listeners -
+const see_more_button = document.getElementById("overview_sm_butt");
+see_more_button.addEventListener("click", (e) => {
+    e.preventDefault();  // Prevent the page from refreshing
+    window.location = "/Frontend/Teacher Area/analysis/analysis.html";  // Redirect to analysis page
+});
+
+const qa_tasks_button = document.getElementById("qacts_tasks_butt");
+qa_tasks_button.addEventListener("click", (e) => {
+    e.preventDefault();  // Prevent the page from refreshing
+    localStorage.setItem("ttr", "none");  // Set the task to review, ttr
+    window.location = "/Frontend/Teacher Area/tasks/tasks.html";  // Redirect to tasks page
+});
+
+const qa_class_button = document.getElementById("qacts_class_butt");
+qa_class_button.addEventListener("click", (e) => {
+    e.preventDefault();  // Prevent page from refreshing
+    window.location = "/Frontend/Teacher Area/classes/classes.html";  // Redirect to classes page
+});
+
+// IDEA FOR USING TASK BUTTONS: Give all an onlick function which gets the inner HTML and finds the task name. Booyah
