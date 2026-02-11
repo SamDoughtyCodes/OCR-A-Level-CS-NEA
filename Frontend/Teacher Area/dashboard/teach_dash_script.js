@@ -63,12 +63,12 @@ if (token === null) {  // If no token
         header_text.innerText = `Welcome, ${username}`;
 
         //TODO: FIX THIS, ISSUE WITH PASSING OF ID ON BACKEND, CUASES FATAL SERVER ERROR
-        // // Active tasks text
-        // const active_text = document.getElementById("a_tasks");
-        // fetch(`http://localhost:8000/api/tasks/active/${username}`).then(resp => resp.json()).then(j_resp => {
-        //     let num_tasks = j_resp.length;
-        //     active_text.innerHTML = `${String(num_tasks)}<br>Active Tasks`;
-        // });
+        // Active tasks text
+        const active_text = document.getElementById("a_tasks");
+        fetch(`http://localhost:8000/api/tasks/active/${username}`).then(resp => resp.json()).then(j_resp => {
+            let num_tasks = j_resp.length;
+            active_text.innerHTML = `${String(num_tasks)}<br>Active Tasks`;
+        });
 
         // Average Student Score
         // Get the scores for all submissions for that teacher

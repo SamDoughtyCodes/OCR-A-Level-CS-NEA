@@ -472,12 +472,14 @@ class database_manager:
         """
         # Get the current date
         curr_date = date.today()
+        curr_date_string = str(curr_date)[0:4] + str(curr_date)[5:7] + str(curr_date)[8:]
 
         # Build the query
         query = """SELECT Tasks.set_id, Tasks.due_date
                    FROM Tasks JOIN Classes ON (Tasks.class_id == Classes.id)
-                   WHERE (Tasks.due_date > '""" + str(curr_date) + """'
+                   WHERE (Tasks.due_date > '""" + curr_date_string + """'
                    AND Classes.teacher_id == """ + str(teacher_id) + ");"
+        print(query)
         
         # Run query and use this to fetch names of sets through another query
         data = self.cursor.execute(query).fetchall()
