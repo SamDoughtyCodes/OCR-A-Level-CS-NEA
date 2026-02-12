@@ -320,19 +320,26 @@ def fetch_all_subs(user: str):
     # Find ID of teacher
     teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])
     # Get class IDs for all classes owned by teacher
-    classes = db_control.fetch_all_records("Classes", ["id"], ["teacher_id", teach_id[0]])
+    classes = db_control.fetch_all_records("Classes", ["id"], ["teacher_id", teach_id[0][0]])
     # Get task IDs for all classes
     task_ids = []
     for c in classes:
-        task_ids.append(db_control.fetch_all_records("Tasks", ["id"], ["class_id", c]))
+        task_ids.append(db_control.fetch_all_records("Tasks", ["id"], ["class_id", c[0]]))
+
+    # Fix task ID array into 1D
+    corrected_t_ids = [id[0] if isinstance(id, tuple) else id for cl in task_ids for id in cl]
+
     # Get submissions
     subs = []
-    for id in task_ids:
-        subs.append(db_control.fetch_all_records("Submissions", ["*"], ["class_id", id]))
+    for id in corrected_t_ids:
+        subs.append(db_control.fetch_all_records("Submissions", ["*"], ["task_id", id]))
+
+    # Fix submissions to be 1D
+    corrected_subs = [sub for task in subs for sub in task]
 
     # Format submissions
     formatted_subs = []
-    for sub in subs:
+    for sub in corrected_subs:
         struct = {
             "id": sub[0],
             "student_id": sub[1],

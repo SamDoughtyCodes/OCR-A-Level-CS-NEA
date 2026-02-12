@@ -78,6 +78,7 @@ if (token === null) {  // If no token
             sub_j_resp.forEach(submission => {  // Iterate over each submission returned from the API
                 scores.push(submission.score);  // Add each score to the array
             });
+            console.log(scores);
             let avg_score = avg(scores);  // Calculate the average score
             avg_text.innerHTML = `${String(avg_score)}%<br>Average Student Score`;  // Update the dashboard text with the score
 
