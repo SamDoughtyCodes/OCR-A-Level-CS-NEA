@@ -264,11 +264,11 @@ def fetch_all_tasks(user: str):
     :type teach_id: int
     """
     # Fetch the relevant data
-    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])
+    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])[0][0]
     classes = db_control.fetch_all_records("Classes", ["id"], ["teacher_id", teach_id])
     all_tasks = []
     for c_id in classes:  # Iterate over all classes found and add their tasks to the array
-        c_tasks = db_control.fetch_all_records("Tasks", ["*"], ["class_id", c_id])
+        c_tasks = db_control.fetch_all_records("Tasks", ["*"], ["class_id", c_id[0]])
         for task in c_tasks:
             all_tasks.append({
                 "id": task[0],
@@ -303,7 +303,7 @@ def fetch_complete_tasks(user: str):
     :type user: str
     """
     # Fetch the relevant data
-    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])
+    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])[0][0]
     res = db_control.fetch_completed_tasks(teach_id)
     return res  # Return the data to the frontend
 
