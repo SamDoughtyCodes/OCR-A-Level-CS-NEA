@@ -290,7 +290,6 @@ def fetch_active_tasks(user: str):
     """
     # Fetch the relevant data
     teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])[0][0]
-    print(teach_id)
     res = db_control.fetch_active_tasks(teach_id)
     return res  # Return the data to the frontend
 

@@ -479,7 +479,6 @@ class database_manager:
                    FROM Tasks JOIN Classes ON (Tasks.class_id == Classes.id)
                    WHERE (Tasks.due_date > '""" + curr_date_string + """'
                    AND Classes.teacher_id == """ + str(teacher_id) + ");"
-        print(query)
         
         # Run query and use this to fetch names of sets through another query
         data = self.cursor.execute(query).fetchall()
