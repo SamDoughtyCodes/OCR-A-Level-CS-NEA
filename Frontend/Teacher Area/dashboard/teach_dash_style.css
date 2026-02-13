@@ -72,11 +72,10 @@ main {
 button {
     background-color: lightblue;
     border-radius: 10px;
-    font-size: 20px;
+    font-size: 15px;
 }
 
-.review_task {
-    border: auto;
-    border-radius: 30px;
-    padding: 10px;
+button.review_task {
+    line-height: 1;
+    white-space: nowrap;
 }

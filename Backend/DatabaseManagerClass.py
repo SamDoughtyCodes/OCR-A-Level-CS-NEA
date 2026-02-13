@@ -451,7 +451,7 @@ class database_manager:
         # Add the names to each data point from the first query
         for ii in range(len(data)):
             iter_data = {
-                "name": names[ii],
+                "name": names[ii][0][0],  # Extra indexes extract data from 1 item arrays
                 "due": data[ii][1],  # Tasks.due_date is index 1
                 "class_name": data[ii][2]  # Classes.name is index 2
             }
@@ -459,7 +459,7 @@ class database_manager:
             del iter_data  # Delete data so it can be reused next iteration
 
         # Return the formatted due tasks
-        return data
+        return formated_data
     
     def fetch_active_tasks(self, teacher_id):
         """

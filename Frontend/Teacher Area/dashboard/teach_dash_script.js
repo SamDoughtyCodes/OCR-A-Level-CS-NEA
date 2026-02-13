@@ -15,7 +15,7 @@ function comp_task_redirect(butt) {
     let class_name = null;
     let task_name = null;
     let tn_start_i = null;  // Variable to store the index of the start of the task name
-    for (let i = 3; i < butt_html.length - 2; i++) {
+    for (let i = 0; i < butt_html.length - 2; i++) {
         // Get the class name and the character where the task name begins
         if (butt_html.slice(i, i+4) == "</p>") {
             class_name = butt_html.slice(3, i);
@@ -95,11 +95,11 @@ if (token === null) {  // If no token
                         // If the submission and task id match, check if it was submitted on time
                         if (c_task_id == task_id) {
                             // Get the submission date
-                            let db_sub_date = submission.completion_date;
+                            let db_sub_date = String(submission.completion_date);
                             let sub_date = new Date(`${db_sub_date.slice(0, 4)}-${db_sub_date.slice(4, 6)}-${db_sub_date.slice(6)}`);
 
                             // Get the due date for the task
-                            let db_due_date = task.due_date;
+                            let db_due_date = String(task.due_date);
                             let due_date = new Date(`${db_due_date.slice(0, 4)}-${db_due_date.slice(4, 6)}-${db_due_date.slice(6)}`);
 
                             // Compare dates
@@ -129,14 +129,14 @@ if (token === null) {  // If no token
                 // Get info required to output
                 let class_name = task.class_name;
                 let task_name = task.name;
-                let due_date = new Date(`${task.due.slice(0, 4)}-${task.due.slice(4, 6)}-${task.due.slice(6)}`);
+                let due_date = new Date(`${String(task.due).slice(0, 4)}-${String(task.due).slice(4, 6)}-${String(task.due).slice(6)}`);
 
                 // Format task into html
                 let html = `
                     <button class="review_task" onclick="comp_task_redirect(this)">
-                        <p>${class_name}</p><br>
-                        <p>${task_name}</p><br>
-                        <p>Due ${due_date.toString()}<p>
+                        <p>${class_name}</p>
+                        <p>${task_name}</p>
+                        <p>Due ${due_date.toString().slice(0, 10)}<p>
                     </button>
                 `;
                 all_html.push(html);
