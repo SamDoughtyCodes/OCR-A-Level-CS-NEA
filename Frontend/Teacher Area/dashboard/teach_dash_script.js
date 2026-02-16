@@ -19,12 +19,14 @@ function comp_task_redirect(butt) {
         // Get the class name and the character where the task name begins
         if (butt_html.slice(i, i+4) == "</p>") {
             class_name = butt_html.slice(3, i);
-            tn_start_i = i + 11;  // Holds the first character of the task name
+            tn_start_i = i + 7;  // Holds the first character of the task name
+            break;
         }
     }
     for (let ii = tn_start_i; ii < butt_html.length - 2; ii++) {
         if (butt_html.slice(ii, ii+4) == "</p>") {
             task_name = butt_html.slice(tn_start_i, ii);
+            break;
         }
     }
     let data = {"class": class_name, "task": task_name};
@@ -132,13 +134,7 @@ if (token === null) {  // If no token
                 let due_date = new Date(`${String(task.due).slice(0, 4)}-${String(task.due).slice(4, 6)}-${String(task.due).slice(6)}`);
 
                 // Format task into html
-                let html = `
-                    <button class="review_task" onclick="comp_task_redirect(this)">
-                        <p>${class_name}</p>
-                        <p>${task_name}</p>
-                        <p>Due ${due_date.toString().slice(0, 10)}<p>
-                    </button>
-                `;
+                let html = `<button class="review_task" onclick="comp_task_redirect(this)"><p>${class_name}</p><p>${task_name}</p><p>Due ${due_date.toString().slice(0, 10)}<p></button>`;
                 all_html.push(html);
             });
             // Set contnets of div to be the tasks due
@@ -166,5 +162,3 @@ qa_class_button.addEventListener("click", (e) => {
     e.preventDefault();  // Prevent page from refreshing
     window.location = "/Frontend/Teacher Area/classes/classes.html";  // Redirect to classes page
 });
-
-// IDEA FOR USING TASK BUTTONS: Give all an onlick function which gets the inner HTML and finds the task name. Booyah
