@@ -75,7 +75,7 @@ button {
     font-size: 15px;
 }
 
-button.review_task {
-    line-height: 1;
-    white-space: nowrap;
+button.bigger_butt {
+    font-size: 20px;
+    padding: 5%;
 }

@@ -116,7 +116,8 @@ if (token === null) {  // If no token
                 });
 
                 let perc_ot = (ot_sum / sub_j_resp.length) * 100;
-                ot_text.innerHTML = `${String(perc_ot)}%<br>Submitted On Time`;
+                let rounded_perc_ot = Math.round(perc_ot * 10) / 10;
+                ot_text.innerHTML = `${String(rounded_perc_ot)}%<br>Submitted On Time`;
             });
         });
 
