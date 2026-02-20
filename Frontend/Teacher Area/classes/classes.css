@@ -1,0 +1,11 @@
+header {
+    background-color: #90223A;
+    color: white;
+    display: flex;
+    padding: 10px;
+}
+
+#logo_img {
+    display: block;
+    margin-left: auto;
+}

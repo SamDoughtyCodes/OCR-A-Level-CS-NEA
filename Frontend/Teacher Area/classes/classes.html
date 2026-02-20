@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!-- Contains the metadata for the class -->
+<head>
+    <title>Your classes</title>
+    <link rel="stylesheet" href="classes.css">
+    <script defer src="classes.js"></script>
+</head>
+
+<body>
+<header> <!-- Top of the page with the username and logo -->
+    <p id="welc_text">Welcome, placeholder</p>
+    <img id="logo_img" src="/Frontend/login/login_assets/KES_logo_transparent.png" alt="The KES academy logo" height="50px">
+</header>
+
+<main> <!-- Contians the main content of the page -->
+<!-- Div for class selection -->
+<div id="class_select">
+    Select a class
+    <select id="class_drop">
+        <option value="none">No classes available</option>
+    </select>
+    or
+    <button id="new_c_butt">create new class</button>
+</div>
+
+<!-- Div to contain class members-->
+<div id="students_div">
+    Please chose a class to view students
+</div>
+
+<!-- Button to add more students -->
+<button id="add_stud_butt" hidden>Add Students</button>
+</main>
+</body>
+</html>

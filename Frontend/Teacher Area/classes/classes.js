@@ -20,5 +20,11 @@ if (token === null) {  // If no token
     }).then(json_resp => {  // Once casted, store the payload in local storage
         localStorage.setItem("payload", JSON.stringify(json_resp.payload));
         console.log("Token validated, username: " + json_resp.payload.username);
+
+        // Header text
+        const header_text = document.getElementById("welc_text");
+        const usr_data = JSON.parse(localStorage.getItem("payload"));
+        const username = usr_data.username;
+        header_text.innerText = `Welcome, ${username}`;
     });
 }
