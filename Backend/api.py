@@ -378,3 +378,24 @@ def fetch_all_classes(user: str):
     
     # Return the response to the frontend
     return formatted_clases
+
+# - Endpoint for fetching all students within a specified class
+@app.get("/api/classes/students/{id}")
+def fetch_class_students(id: int):
+    """
+    Endpoint which fetches data for all of the students in a class
+
+    :param id: The ID of the class to fetch for
+    :type id: Integer
+    """
+    # Get the IDs of students in the class
+    stud_ids = db_control.fetch_all_records("Student_Class_Link", ["student_id"], ["class_id", id])
+    # Get the details for each student and format them together
+    class_data = []
+    for student in stud_ids:
+        # Get the student data
+        stud_data = db_control.fetch_student_data(student[0])
+        class_data.append(stud_data)
+    
+    # Return the complete set of data
+    return class_data
