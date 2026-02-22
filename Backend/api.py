@@ -351,3 +351,30 @@ def fetch_all_subs(user: str):
 
     # Return data to frontend in dict/JSON format
     return formatted_subs
+
+# - Endponint to fetch all of the classes a teacher is the owner of -
+@app.get("/api/classes/all/{user}")
+def fetch_all_classes(user: str):
+    """
+    Endpoint which fetches all classes a specified teacher is the owner of
+
+    :param user: The username of the teacher
+    :type user: String
+    """
+    # Get the ID of the teacher
+    teach_id = db_control.fetch_all_records("Teachers", ["id"], ["username", user])[0][0]
+    # Get the names and IDs of the classes which need to be output
+    classes = db_control.fetch_all_records("Classes", ["id", "name"], ["teacher_id", teach_id])
+
+    # Format the response
+    formatted_clases = []
+    for cl in classes:
+        data = {
+            "id": cl[0],
+            "name": cl[1]
+        }
+        formatted_clases.append(data)
+        del data
+    
+    # Return the response to the frontend
+    return formatted_clases

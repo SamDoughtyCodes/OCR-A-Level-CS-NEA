@@ -26,5 +26,19 @@ if (token === null) {  // If no token
         const usr_data = JSON.parse(localStorage.getItem("payload"));
         const username = usr_data.username;
         header_text.innerText = `Welcome, ${username}`;
+
+        // Get classes
+        fetch(`http://localhost:8000/api/classes/all/${username}`).then(resp => resp.json()).then(json_classes => {
+            // Format classes returned into HTML to output
+            let html_str = "";
+            json_classes.forEach(cl => {
+                let cl_str = `<option value="${cl.id}">${cl.name}</option>`;
+                html_str += cl_str;
+            });
+
+            // Add HTML to page
+            const classes_dropdown = document.getElementById("class_drop");
+            classes_dropdown.innerHTML = html_str;
+        });
     });
 }

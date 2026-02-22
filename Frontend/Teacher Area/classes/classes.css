@@ -1,3 +1,10 @@
+body {
+    font-family: "Gowun Dodum", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+}
+
 header {
     background-color: #90223A;
     color: white;
@@ -8,4 +15,13 @@ header {
 #logo_img {
     display: block;
     margin-left: auto;
+}
+
+#class_select {
+    background-color: lightblue;
+    padding: 10px;
+}
+
+#students_div {
+    padding: 10px;
 }
