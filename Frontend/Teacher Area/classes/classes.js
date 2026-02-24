@@ -42,3 +42,33 @@ if (token === null) {  // If no token
         });
     });
 }
+
+// Get the students for a class when the dropdown is updated
+const dropdown = document.getElementById("class_drop");
+const stud_list_div = document.getElementById("students_div");
+const add_studs_butt = document.getElementById("add_stud_butt");
+dropdown.addEventListener("change", (e) => {
+    // Get the ID of the selected class
+    let id = dropdown.value;
+    fetch(`http://localhost:8000/api/classes/students/${id}`).then(resp => resp.json()).then(studs_json => {
+        let studs_html_str = "";  // String which will store new HTML for the page
+        studs_json.forEach(student => {
+            // String of HTML for this specific student
+            let stud_html_fill = `${student.personal.username} <button class="stud_user" onclick="usr_upd_func(this)">Change Username</button><button class="stud_pass" onclick="pas_upd_func(this)">Change Password</button><br>`;
+            studs_html_str += stud_html_fill;
+        });
+        // Fill the HTML for the page
+        stud_list_div.innerHTML = studs_html_str;
+    });
+
+    // Remove attribute to make button visiable
+    add_studs_butt.removeAttribute("hidden");
+});
+
+// Function to update the username of a student on button press
+function usr_upd_func() {
+    
+}
+
+// Classes don't show up until an update, so when change needed just
+// store all of this in a function which is called by the event listener
