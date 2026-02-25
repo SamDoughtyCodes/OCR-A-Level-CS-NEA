@@ -65,10 +65,34 @@ dropdown.addEventListener("change", (e) => {
     add_studs_butt.removeAttribute("hidden");
 });
 
-// Function to update the username of a student on button press
-function usr_upd_func() {
-    
-}
+// Logic for creating a new class
+const new_class_popup = document.getElementById("new_class_pop");
+const new_class_activate_butt = document.getElementById("new_c_butt");
+new_class_activate_butt.addEventListener("click", (e) => {
+    e.preventDefault();  // Stop the page from refreshing
+    // Make the popup visiable
+    new_class_popup.removeAttribute("hidden");
+});
+// Deal with submission of new class
+const new_class_submit = document.getElementById("new_c_sub");
+const new_class_name = document.getElementById("c_name_box");
+new_class_submit.addEventListener("click", (e) => {
+    e.preventDefault();  // Stop the page from refreshing
+    // Get the value of the box with the name
+    let name_val = new_class_name.value;
+    // Validate length 
+    if (name_val.length == 0) {
+        alert("Please enter a class name!");
+    } else {  // If a name has been entered
+        // Prepare data for making the API call
+        let usr_data = localStorage.getItem("payload");
+        fetch("http://localhost:8000/api/classes/new", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            // body: {"name": name_val, "owner_id": }
+        })
+    }
+})
 
 // Classes don't show up until an update, so when change needed just
 // store all of this in a function which is called by the event listener

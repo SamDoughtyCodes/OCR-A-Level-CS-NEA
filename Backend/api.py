@@ -221,6 +221,7 @@ def create_task(data: NewTask):
 class NewClass(BaseModel):
     name: str  # The name of the class (e.g. Y7Maths)
     owner_id: int  # The ID of the teacher who owns the class
+    owner_name: str  # The name of the class owner
 
 @app.post("/api/classes/new")
 def create_class(data: NewClass):
@@ -230,6 +231,11 @@ def create_class(data: NewClass):
     :param data: The data needed to create the class
     :type data: NewClass
     """
+    # If a name has been supplied rather than an ID
+    if not data.owner_id:
+        # Find the ID of the teacher
+        data.owner_id = int(db_control.fetch_all_records("Teachers", ["id"], ["username", data.owner_name])[0][0])
+
     res = db_control.create_new_class(data.name, data.owner_id)
     return res  # Return if the method executed successfully or not
 

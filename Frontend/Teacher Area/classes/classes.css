@@ -29,3 +29,19 @@ header {
 #add_stud_butt {
     margin: 10px;
 }
+
+#new_class_pop {
+    background-color: #90223A;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    place-items: center;
+}
+
+#inner_ncp {
+    background-color: white;
+    border-radius: 30px;
+    padding: 5%;
+    margin: 10px;
+}
