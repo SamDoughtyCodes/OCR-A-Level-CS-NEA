@@ -61,6 +61,14 @@ dropdown.addEventListener("change", (e) => {
         stud_list_div.innerHTML = studs_html_str;
     });
 
+    // Update the text which includes class names
+    let class_name = dropdown.options[dropdown.selectedIndex].text;
+    const add_stud_pop_title = document.getElementById("add_stud_title");
+    add_stud_pop_title.innerHTML = `Add students to ${class_name}`;
+
+    const confirm_button = document.getElementById("confirm_add_studs");
+    confirm_button.innerHTML = `Add students to ${class_name}`;
+
     // Remove attribute to make button visiable
     add_studs_butt.removeAttribute("hidden");
 });
@@ -89,10 +97,27 @@ new_class_submit.addEventListener("click", (e) => {
         fetch("http://localhost:8000/api/classes/new", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            // body: {"name": name_val, "owner_id": }
-        })
+            body: {"name": name_val, "owner_id": None, "owner_name": usr_data.username}
+        }).then(resp => {
+            alert("Class created!");
+            location.reload();  // Refresh the page to update page
+        });
     }
-})
+});
+
+// - Logic for adding new students - 
+// When the button is clicked, the pop up should be made visiable
+const add_students_popup = document.getElementById("add_stud_pop");
+add_studs_butt.addEventListener("click", (e) => {
+    e.preventDefault();  // Stop page refresh when clicked
+    add_students_popup.removeAttribute("hidden");  // Make the popup visiable
+});
+
+// Refresh the page when the cancel button is pressed
+const cancel_add_students = document.getElementById("cancel_add_studs");
+cancel_add_students.addEventListener("click", (e) => {
+    location.reload();  // Refresh the page
+});
 
 // Classes don't show up until an update, so when change needed just
 // store all of this in a function which is called by the event listener

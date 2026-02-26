@@ -32,8 +32,8 @@
 <button id="add_stud_butt" hidden>Add Students</button>
 
 <!-- Create new class popup -->
-<div id="new_class_pop" hidden>
-    <div id="inner_ncp">
+<div id="new_class_pop" class="popup_outer" hidden>
+    <div id="inner_ncp" class="popup_inner">
         <h3>Create New Class</h3>
         <form id="new_class_name">
             <label for="c_name">Class name:</label>
@@ -43,6 +43,28 @@
         </form>
     </div>
 </div>
+
+<!-- Create new students popup -->
+<div id="add_stud_pop" class="popup_outer" hidden>
+    <div id="inner_asp" class="popup_inner">
+        <h2 id="add_stud_title">Add students to class</h2>
+        <form id="usr_search">
+            <label for="uname">Username:</label>
+            <input name="uname" id="uname_search_box">
+            <button id="uname_search_submit">Search</button>
+        </form>
+        <hr>
+        <h3>Selected students:</h3>
+        <p id="selected_studs_p">Students which you have selected will appear here</p>
+        <hr>
+        <h3>Available students:</h3>
+        <div id="available_studs">Students matching your search that are not already in this class will appear here</div>
+        <hr><br>
+        <button id="confirm_add_studs">Add students to class</button>
+        <button id="cancel_add_studs">Cancel</button>
+    </div>
+</div>
+
 </main>
 </body>
 </html>

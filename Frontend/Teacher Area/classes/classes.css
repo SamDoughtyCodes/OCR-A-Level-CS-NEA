@@ -30,16 +30,22 @@ header {
     margin: 10px;
 }
 
-#new_class_pop {
+.popup_outer {
     background-color: #90223A;
     position: fixed;
     top: 0;
     width: 100vw;
     height: 100vh;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#inner_ncp {
+.popup_outer[hidden] {
+    display: none !important;
+}
+
+.popup_inner {
     background-color: white;
     border-radius: 30px;
     padding: 5%;
