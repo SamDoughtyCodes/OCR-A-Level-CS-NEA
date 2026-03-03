@@ -169,6 +169,7 @@ def fetch_stud_data(id: int):
 # - Endpoint for updating a username -
 class NewUsername(BaseModel):
     id: int  # The ID of the student to update the username of
+    user: str  # The current username
     name: str  # The new username to use
 
 @app.post("/api/students/upd_user")
@@ -179,6 +180,10 @@ def update_username(data: NewUsername):
     :param data: Class to store data to update
     :type data: NewUsername
     """
+    # Get the ID if it is not already present
+    if not data.id:
+        data.id = int(db_control.fetch_all_records("Students", ["id"], ["username", data.user])[0])
+
     res = db_control.update_username(data.id, data.name)
     return res  # Return if the method executed successfully or not
 
@@ -405,3 +410,17 @@ def fetch_class_students(id: int):
     
     # Return the complete set of data
     return class_data
+
+# - Endpoint for searching for students - 
+@app.get("/api/students/search/{query}")
+def search_students(query: str):
+    """
+    Endpoint which fetches the students with usernames partially matching a given query
+
+    :param query: The search query to use
+    :type query: String
+    """
+    # Search based on the query
+    studs = db_control.fetch_all_records("Students", ["username"], ["username", query])
+    alterred_studs = [student[0] for student in studs]
+    return alterred_studs  # Return the search result

@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<!-- Create new students popup -->
+<!-- New students popup -->
 <div id="add_stud_pop" class="popup_outer" hidden>
     <div id="inner_asp" class="popup_inner">
         <h2 id="add_stud_title">Add students to class</h2>
@@ -62,6 +62,33 @@
         <hr><br>
         <button id="confirm_add_studs">Add students to class</button>
         <button id="cancel_add_studs">Cancel</button>
+    </div>
+</div>
+
+<!-- Change Username Popup -->
+<div id="upd_user_pop" class="popup_outer" hidden>
+    <div id="inner_udu" class="popup_inner">
+        <h2 id="upd_user_title">Update username of student</h2>
+        <label for="upd_user_inp">Enter the new username:</label>
+        <input id="upd_user_inp"><br>
+        <button id="confirm_upd_uname">Update</button>
+    </div>
+</div>
+
+<!-- Change Password Popup -->
+<div id="upd_pass_pop" class="popup_outer" hidden>
+    <div id="inner_udp" class="popup_inner">
+        <h2 id="upd_pass_title">Update password of student</h2>
+        <label for="upd_pass_inp">Enter the new password:</label>
+        <input id="upd_pass_inp">
+        <p>Must contain:</p>
+        <ul>
+            <li>8+ characters</li>
+            <li>A capital letter</li>
+            <li>Lower case letters</li>
+            <li>A special character from the following...<br>! ? ' # @ ( ) £ % * &</li>
+        </ul>
+        <button id="confirm_upd_uname">Update</button>
     </div>
 </div>
 

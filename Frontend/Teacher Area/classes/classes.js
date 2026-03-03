@@ -54,7 +54,7 @@ dropdown.addEventListener("change", (e) => {
         let studs_html_str = "";  // String which will store new HTML for the page
         studs_json.forEach(student => {
             // String of HTML for this specific student
-            let stud_html_fill = `${student.personal.username} <button class="stud_user" onclick="usr_upd_func(this)">Change Username</button><button class="stud_pass" onclick="pas_upd_func(this)">Change Password</button><br>`;
+            let stud_html_fill = `${student.personal.username} <button id="${student.personal.username}_user_butt" class="stud_user" onclick="usr_upd_func(this)">Change Username</button><button id="${student.personal.username}_pass_butt" class="stud_pass" onclick="pas_upd_func(this)">Change Password</button><br>`;
             studs_html_str += stud_html_fill;
         });
         // Fill the HTML for the page
@@ -118,6 +118,47 @@ const cancel_add_students = document.getElementById("cancel_add_studs");
 cancel_add_students.addEventListener("click", (e) => {
     location.reload();  // Refresh the page
 });
+
+// Search box logic
+const search_butt = document.getElementById("uname_search_submit");
+const search_box = document.getElementById("uname_search_box");
+const available_studs = document.getElementById("availible_students");
+search_butt.addEventListener("click", (e) => {
+    e.preventDefault();  // Stop the page from refreshing
+    let search_val = search_box.value;
+    fetch(`http://localhost:8000/api/students/search/${String(search_val)}`).then(res => res.json()).then(j_res => {
+        let available_html = `<form id="av_students">`;
+        j_res.forEach(stud => {
+            available_html += `<label for="${stud}_available">${stud}</label><input type="radio" id="${stud}_available">`;
+        });
+        available_html += `</form>`;
+        available_studs.innerHTML = available_html;
+    });
+});
+
+// Popup for updating a username
+const user_popup = document.getElementById("upd_user_pop");
+const inp_value_user = document.getElementById("upd_user_inp");
+function upd_user_click(button) {
+    user_popup.removeAttribute("hidden");  // Makes the popup visiable
+    
+    let stud_user = button.id.slice(0, -10);  // Get the current username of the user
+    let new_name = inp_value_user.value;  // Get the new username which has been enterred
+    
+    // Make API call
+    fetch("http://localhost:8000/api/students/upd_user", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: {"id": null, "user": stud_user, "name": new_name}
+    }).then(resp => resp.json()).then(j_resp => {
+        if (j_resp == true) {
+            alert("Username updated successfully!");
+        } else {
+            alert("Failed to update username");
+        }
+        location.reload()  // Refresh the page to update changes
+    });
+};
 
 // Classes don't show up until an update, so when change needed just
 // store all of this in a function which is called by the event listener
