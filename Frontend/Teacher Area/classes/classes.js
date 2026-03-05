@@ -1,3 +1,12 @@
+// Function to hash data
+async function hash_func(data) {
+    const buffer = new TextEncoder().encode(data);  // Encode the data to a byte array
+    const hashBuff = await crypto.subtle.digest("SHA-256", buffer);  // Hash the message
+    const hashArr = Array.from(new Uint8Array(hashBuff));  // Generate an array of the hashvalue
+    const hashHex = hashArr.map(b => ("00" + b.toString(16)).slice(-2)).join("");  // Convert to hex array
+    return hashHex;  // Return the final value
+}
+
 // --- Validate token ---
 let token = localStorage.getItem("token");  // Fetch the token from storage
 // Check if a token was found
@@ -54,7 +63,7 @@ dropdown.addEventListener("change", (e) => {
         let studs_html_str = "";  // String which will store new HTML for the page
         studs_json.forEach(student => {
             // String of HTML for this specific student
-            let stud_html_fill = `${student.personal.username} <button id="${student.personal.username}_user_butt" class="stud_user" onclick="usr_upd_func(this)">Change Username</button><button id="${student.personal.username}_pass_butt" class="stud_pass" onclick="pas_upd_func(this)">Change Password</button><br>`;
+            let stud_html_fill = `${student.personal.username} <button id="${student.personal.username}_user_butt" class="stud_user" onclick="usr_upd_func(this)">Change Username</button><button id="${student.personal.username}_pass_butt" class="stud_pass" onclick="pass_upd_func(this)">Change Password</button><br>`;
             studs_html_str += stud_html_fill;
         });
         // Fill the HTML for the page
@@ -139,7 +148,7 @@ search_butt.addEventListener("click", (e) => {
 // Popup for updating a username
 const user_popup = document.getElementById("upd_user_pop");
 const inp_value_user = document.getElementById("upd_user_inp");
-function upd_user_click(button) {
+function usr_upd_func(button) {
     user_popup.removeAttribute("hidden");  // Makes the popup visiable
     
     let stud_user = button.id.slice(0, -10);  // Get the current username of the user
@@ -159,6 +168,59 @@ function upd_user_click(button) {
         location.reload()  // Refresh the page to update changes
     });
 };
+
+// Popup for updating a password
+const pass_popup = document.getElementById("upd_pass_pop");
+const inp_value_pass = document.getElementById("upd_pass_inp");
+async function pass_upd_func(button) {
+    pass_popup.removeAttribute("hidden");  // Make popup visiable
+
+    let stud_user = button.id.slice(0, -10);  // Gets the username of the user to update the password of
+    let new_pass = inp_value_pass.value;  // Gets the password the user wishes to update
+
+    // Validate password
+    let pw_len_check = (new_pass.length >= 8);
+    let is_cap = false; let is_low = false; let is_spec = false;
+    let specials = ["!", "?", "'", "#", "@", "(", ")", "£", "%", "*", "&"]
+    for (let i = 0; i < new_pass.length; i++) {
+        // If the character is upper case
+        if (new_pass[i] == new_pass[i].toUpperCase()) {is_cap = true;}
+        // If the character is lower case
+        if (new_pass[i] == new_pass[i].toLowerCase()) {is_low = true;}
+        // If the character is special
+        if (specials.includes(new_pass[i])) {is_spec = true;}
+    }
+
+    // If the password is invalid, return early
+    if (!pw_len_check || !is_cap || !is_low || !is_spec) {
+        alert("Please ensure the password meets valid criteria!");
+        return;
+    }
+
+    // Hash the password ready to be stored in the database
+    let hashed_pass = await hash_func(new_pass);
+
+    // Format data for API call
+    data = {
+        "id": null,
+        "user": stud_user,
+        "hash": hashed_pass
+    };
+
+    // Make API call and handle response
+    fetch("http://localhost:8000/api/students/upd_pass", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: data
+    }).then(resp => resp.json()).then(j_resp_pass => {
+        if (j_resp_pass == true) {
+            alert("Password updated successfully!");
+        } else {
+            alert("Failed to update password");
+        }
+        location.reload()  // Refresh the page to update changes
+    });
+}
 
 // Classes don't show up until an update, so when change needed just
 // store all of this in a function which is called by the event listener

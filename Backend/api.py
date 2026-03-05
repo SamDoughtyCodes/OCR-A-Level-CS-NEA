@@ -190,6 +190,7 @@ def update_username(data: NewUsername):
 # - Endpoint for updating a password -
 class NewPass(BaseModel):
     id: int  # The ID of the student to update the password of
+    user: str  # The username of the student
     hash: str  # Hash value of the new password
 
 @app.post("/api/students/upd_pass")
@@ -200,6 +201,10 @@ def update_password(data: NewPass):
     :param data: The data being updated
     :type data: NewPass
     """
+    # Get the ID if it is not already present
+    if not data.id:
+        data.id = int(db_control.fetch_all_records("Students", ["id"], ["username", data.user])[0])
+
     res = db_control.update_password(data.id, data.hash)
     return res  # Return if the method executed successfully or not
 
