@@ -204,7 +204,7 @@ def update_password(data: NewPass):
     """
     # Get the ID if it is not already present
     if not data.id:
-        data.id = int(db_control.fetch_all_records("Students", ["id"], ["username", data.user])[0])
+        data.id = int(db_control.fetch_all_records("Students", ["id"], ["username", data.user])[0][0])
 
     res = db_control.update_password(data.id, data.hash)
     return res  # Return if the method executed successfully or not

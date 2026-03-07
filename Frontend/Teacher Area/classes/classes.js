@@ -184,7 +184,7 @@ user_upd_subbutt.addEventListener("click", (e) => {
 // Popup for updating a password
 const pass_popup = document.getElementById("upd_pass_pop");
 const inp_value_pass = document.getElementById("upd_pass_inp");
-const upd_pass_subbutt = document.getElementById("confirm_upd_uname");
+const upd_pass_subbutt = document.getElementById("confirm_upd_pass");
 let stud_to_upd = "";
 async function pass_upd_func(button) {
     pass_popup.removeAttribute("hidden");  // Make popup visiable
@@ -227,7 +227,7 @@ upd_pass_subbutt.addEventListener("click", (e) => {
         fetch("http://localhost:8000/api/students/upd_pass", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: data
+            body: JSON.stringify(data)
         }).then(resp => resp.json()).then(j_resp_pass => {
             if (j_resp_pass == true) {
                 alert("Password updated successfully!");
