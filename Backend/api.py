@@ -1,6 +1,7 @@
 # API related imports
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
 from pydantic import BaseModel
 from pathlib import Path
 
@@ -168,7 +169,7 @@ def fetch_stud_data(id: int):
 
 # - Endpoint for updating a username -
 class NewUsername(BaseModel):
-    id: int  # The ID of the student to update the username of
+    id: Optional[int] = None  # The ID of the student to update the username of
     user: str  # The current username
     name: str  # The new username to use
 
@@ -182,14 +183,14 @@ def update_username(data: NewUsername):
     """
     # Get the ID if it is not already present
     if not data.id:
-        data.id = int(db_control.fetch_all_records("Students", ["id"], ["username", data.user])[0])
+        data.id = int(db_control.fetch_all_records("Students", ["id"], ["username", data.user])[0][0])
 
     res = db_control.update_username(data.id, data.name)
     return res  # Return if the method executed successfully or not
 
 # - Endpoint for updating a password -
 class NewPass(BaseModel):
-    id: int  # The ID of the student to update the password of
+    id: Optional[int] = None  # The ID of the student to update the password of
     user: str  # The username of the student
     hash: str  # Hash value of the new password
 
@@ -230,7 +231,7 @@ def create_task(data: NewTask):
 # - Endpoint to create a new class -
 class NewClass(BaseModel):
     name: str  # The name of the class (e.g. Y7Maths)
-    owner_id: int  # The ID of the teacher who owns the class
+    owner_id: Optional[int] = None  # The ID of the teacher who owns the class
     owner_name: str  # The name of the class owner
 
 @app.post("/api/classes/new")

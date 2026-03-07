@@ -48,6 +48,9 @@ if (token === null) {  // If no token
             // Add HTML to page
             const classes_dropdown = document.getElementById("class_drop");
             classes_dropdown.innerHTML = html_str;
+
+            // Call to get the initial set of students
+            format_students();
         });
     });
 }
@@ -56,7 +59,9 @@ if (token === null) {  // If no token
 const dropdown = document.getElementById("class_drop");
 const stud_list_div = document.getElementById("students_div");
 const add_studs_butt = document.getElementById("add_stud_butt");
-dropdown.addEventListener("change", (e) => {
+
+// Function to load members of a class on update of the dropdown
+function format_students() {
     // Get the ID of the selected class
     let id = dropdown.value;
     fetch(`http://localhost:8000/api/classes/students/${id}`).then(resp => resp.json()).then(studs_json => {
@@ -80,7 +85,10 @@ dropdown.addEventListener("change", (e) => {
 
     // Remove attribute to make button visiable
     add_studs_butt.removeAttribute("hidden");
-});
+}
+
+// Call the function every time the page updates
+dropdown.addEventListener("change", format_students);
 
 // Logic for creating a new class
 const new_class_popup = document.getElementById("new_class_pop");
@@ -102,11 +110,11 @@ new_class_submit.addEventListener("click", (e) => {
         alert("Please enter a class name!");
     } else {  // If a name has been entered
         // Prepare data for making the API call
-        let usr_data = localStorage.getItem("payload");
+        let usr_data = JSON.parse(localStorage.getItem("payload"));
         fetch("http://localhost:8000/api/classes/new", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: {"name": name_val, "owner_id": None, "owner_name": usr_data.username}
+            body: JSON.stringify({"name": name_val, "owner_id": null, "owner_name": usr_data.username})
         }).then(resp => {
             alert("Class created!");
             location.reload();  // Refresh the page to update page
@@ -148,17 +156,21 @@ search_butt.addEventListener("click", (e) => {
 // Popup for updating a username
 const user_popup = document.getElementById("upd_user_pop");
 const inp_value_user = document.getElementById("upd_user_inp");
+const user_upd_subbutt = document.getElementById("confirm_upd_uname");
+let stud_user = ""; // The username of the student who needs updating
 function usr_upd_func(button) {
     user_popup.removeAttribute("hidden");  // Makes the popup visiable
-    
-    let stud_user = button.id.slice(0, -10);  // Get the current username of the user
+    stud_user = button.id.slice(0, -10);  // Get the current username of the user
+};
+user_upd_subbutt.addEventListener("click", (e) => {
+    e.preventDefault()  // Stop the page from refreshing
     let new_name = inp_value_user.value;  // Get the new username which has been enterred
     
     // Make API call
     fetch("http://localhost:8000/api/students/upd_user", {
         method: "POST",
         headers: {"Content-Type": "application/json"},
-        body: {"id": null, "user": stud_user, "name": new_name}
+        body: JSON.stringify({"id": null, "user": stud_user, "name": new_name})
     }).then(resp => resp.json()).then(j_resp => {
         if (j_resp == true) {
             alert("Username updated successfully!");
@@ -167,15 +179,20 @@ function usr_upd_func(button) {
         }
         location.reload()  // Refresh the page to update changes
     });
-};
+})
 
 // Popup for updating a password
 const pass_popup = document.getElementById("upd_pass_pop");
 const inp_value_pass = document.getElementById("upd_pass_inp");
+const upd_pass_subbutt = document.getElementById("confirm_upd_uname");
+let stud_to_upd = "";
 async function pass_upd_func(button) {
     pass_popup.removeAttribute("hidden");  // Make popup visiable
-
-    let stud_user = button.id.slice(0, -10);  // Gets the username of the user to update the password of
+    stud_to_upd = button.id.slice(0, -10);  // Gets the username of the user to update the password of
+}
+upd_pass_subbutt.addEventListener("click", (e) => {
+    e.preventDefault();
+    console.log("Being run!");
     let new_pass = inp_value_pass.value;  // Gets the password the user wishes to update
 
     // Validate password
@@ -198,29 +215,26 @@ async function pass_upd_func(button) {
     }
 
     // Hash the password ready to be stored in the database
-    let hashed_pass = await hash_func(new_pass);
+    hash_func(new_pass).then(hashed_pass => {
+        // Format data for API call
+        data = {
+            "id": null,
+            "user": stud_to_upd,
+            "hash": hashed_pass
+        };
 
-    // Format data for API call
-    data = {
-        "id": null,
-        "user": stud_user,
-        "hash": hashed_pass
-    };
-
-    // Make API call and handle response
-    fetch("http://localhost:8000/api/students/upd_pass", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: data
-    }).then(resp => resp.json()).then(j_resp_pass => {
-        if (j_resp_pass == true) {
-            alert("Password updated successfully!");
-        } else {
-            alert("Failed to update password");
-        }
-        location.reload()  // Refresh the page to update changes
+        // Make API call and handle response
+        fetch("http://localhost:8000/api/students/upd_pass", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: data
+        }).then(resp => resp.json()).then(j_resp_pass => {
+            if (j_resp_pass == true) {
+                alert("Password updated successfully!");
+            } else {
+                alert("Failed to update password");
+            }
+            location.reload()  // Refresh the page to update changes
+        });
     });
-}
-
-// Classes don't show up until an update, so when change needed just
-// store all of this in a function which is called by the event listener
+});
