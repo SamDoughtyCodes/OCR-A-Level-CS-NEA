@@ -139,19 +139,37 @@ cancel_add_students.addEventListener("click", (e) => {
 // Search box logic
 const search_butt = document.getElementById("uname_search_submit");
 const search_box = document.getElementById("uname_search_box");
-const available_studs = document.getElementById("availible_students");
+const available_studs = document.getElementById("available_studs");
+let studs_added = 0;  // Keep count of the numbre of students which have been selected
 search_butt.addEventListener("click", (e) => {
     e.preventDefault();  // Stop the page from refreshing
     let search_val = search_box.value;
     fetch(`http://localhost:8000/api/students/search/${String(search_val)}`).then(res => res.json()).then(j_res => {
         let available_html = `<form id="av_students">`;
         j_res.forEach(stud => {
-            available_html += `<label for="${stud}_available">${stud}</label><input type="radio" id="${stud}_available">`;
+            available_html += `<label for="${stud}_available">${stud}</label><input type="radio" id="${stud}_available" onchange="set_selected(this)">`;
         });
         available_html += `</form>`;
         available_studs.innerHTML = available_html;
     });
 });
+const selected_studs = document.getElementById("selected_studs");
+// Function which moves a student from available students to selected students
+function set_selected(r_butt) {
+    available_studs.innerHTML = "";
+    let student_user = r_butt.id.slice(0, -10);  // Get the username of the student which has been selected
+    let rb_html = `<label for="${student_user}_selected">${student_user}</label><input type="radio" id="${student_user}_selected" onchange="set_deselected(this)">`
+    if (studs_added == 0) {  // If this is the first student, remove the placeholder text
+        selected_studs.innerHTML = rb_html;
+    } else {  // Otherwise add this item to the form
+        selected_studs.innerHTML += rb_html;  // Append the data to the form which has been accessed
+    }
+    studs_added++;  // Increment the counter to keep track of the number of students
+}
+// Function which removes students from selected
+function set_deselected(r_butt) {
+
+}
 
 // Popup for updating a username
 const user_popup = document.getElementById("upd_user_pop");
