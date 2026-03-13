@@ -158,7 +158,7 @@ const selected_studs = document.getElementById("selected_studs");
 function set_selected(r_butt) {
     available_studs.innerHTML = "";
     let student_user = r_butt.id.slice(0, -10);  // Get the username of the student which has been selected
-    let rb_html = `<label for="${student_user}_selected">${student_user}</label><input type="radio" id="${student_user}_selected" onchange="set_deselected(this)">`
+    let rb_html = `<label for="${student_user}_selected" id="${student_user}_label">${student_user}</label><input type="radio" id="${student_user}_selected" onchange="set_deselected(this)">`
     if (studs_added == 0) {  // If this is the first student, remove the placeholder text
         selected_studs.innerHTML = rb_html;
     } else {  // Otherwise add this item to the form
@@ -168,8 +168,38 @@ function set_selected(r_butt) {
 }
 // Function which removes students from selected
 function set_deselected(r_butt) {
-
+    let rb_elem = document.getElementById(r_butt.id);  // Get the element pressed
+    let label_id = rb_elem.id.slice(0, -9) + "_label";  // Get the ID of the label element
+    let lab_elem = document.getElementById(label_id);
+    rb_elem.remove();
+    lab_elem.remove();
 }
+
+// Deal with the submission of new students to classes
+const new_studs_sub_butt = document.getElementById("confirm_add_studs");
+new_studs_sub_butt.addEventListener("click", (e) => {
+    e.preventDefault();
+    // Get all students to add, and store in an array
+    let students = [];
+    let labels = selected_studs.querySelectorAll("label");
+    for (i = 0; i < labels.length; i++) {
+        // Add the student name to the array
+        students.push(labels[i].innerText);
+    }
+    let class_id = dropdown.value;  // Get the ID of the class to add the students to
+    let call_data = {"c_id": class_id, "studs": students};  // Format data
+    
+    // Make API call
+    fetch("http://localhost:8000/api/students/add_link", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(call_data)
+    }).then(resp => resp.json()).then(j_resp => {
+        if (j_resp) {alert("Students added successfully!");}  // If the call was successful
+        else {alert("Issue adding students!");}
+        location.reload();  // Refresh the page to update any changes
+    });
+});
 
 // Popup for updating a username
 const user_popup = document.getElementById("upd_user_pop");

@@ -256,7 +256,7 @@ class NewStuds(BaseModel):
     stud_ids: list[int]  # List of IDs of students to add to the class
 
 @app.post("/api/classes/add")
-def add_students(data: NewStuds):
+def add_students_id(data: NewStuds):
     """
     Endpoint to add students to a class
     
@@ -430,3 +430,25 @@ def search_students(query: str):
     studs = db_control.fetch_all_records("Students", ["username"], ["username", query])
     alterred_studs = [student[0] for student in studs]
     return alterred_studs  # Return the search result
+
+# - Endpoint to add specified studnents to a class
+class StudCreds(BaseModel):
+    c_id: int  # The ID of the class to add students to
+    studs: list[str]  # Array of student names to add
+
+@app.post("/api/students/add_link")
+def add_students(creds: StudCreds):
+    """
+    Endpoint which adds students to a class
+    """
+    success = False
+    # Get the IDs of all students
+    for student in creds.studs:
+        id = db_control.fetch_all_records("Students", ["id"], ["username", student])[0][0]  # get the ID
+        success = db_control.add_student_class_link(id, creds.c_id)  # Add the student to the class
+
+        # If there is an error, leave early
+        if not success:
+            break
+    
+    return success
