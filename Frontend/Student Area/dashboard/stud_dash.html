@@ -1,10 +1,54 @@
 <!DOCTYPE html>
 <html>
+<!-- Metadata for the page -->
 <head>
     <title>Student Dashboard</title>
     <script defer src="stud_dash_script.js"></script>
+    <link rel="stylesheet" href="stud_dash_style.css">
 </head>
+
+<!-- Main contents of the page -->
 <body>
-    <h1>Student dash: more coming soon!</h1>
+<!-- Header banner -->
+<header>
+    <p id="header_welc_text">Welcome, student</p> <!-- Placeholder welcome text -->
+    <p id="header_xp_text"></p>  <!-- Placeholder XP text-->
+    <img id="logo_img" src="/Frontend/login/login_assets/KES_logo_transparent.png" alt="The KES academy logo" height="50px">
+</header>
+
+<!-- Rest of the page -->
+<main>
+    <!-- Tasks tab -->
+    <div id="tasks_tab">
+        <p>Your starting points:</p>
+        <div id="tt_stats_boxes">
+            <p id="tt_active"><br>Active Tasks</p> <!-- Placeholder for active tasks -->
+            <p id="tt_overdue"><br>Overdue Tasks</p> <!-- Placeholder for overdue tasks-->
+        </div>
+        <div id="tt_tasks_container">Tasks will appear here when set</div> <!-- Placeholder for tasks -->
+    </div>
+
+    <!-- Student data tab -->
+    <div id="stud_tab">
+        <!-- Div for left hand side (lhs) content -->
+        <div id="st_lhs_content">
+            <p>Your data:</p>
+            <p id="life_avg"><br>Lifetime Average</p>
+            <p id="recent_avg"><br>Recent Average</p>
+        </div>
+        <!-- Div for right hand side (rhs) content -->
+        <div id="st_rhs_content">
+            <p>Insight<br>placehold</p> <!-- Placeholder for comment on data -->
+        </div>
+    </div>
+
+    <!-- Next steps tab -->
+    <div id="next_tab">
+        <!-- Buttons linking to other pages -->
+        <button id="ind_study_butt">Independant Study</button>
+        <button id="lead_butt">Leaderboards</button>
+        <button id="history_butt">Task History</button>
+    </div>
+</main>
 </body>
 </html>
