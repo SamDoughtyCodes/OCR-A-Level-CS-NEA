@@ -529,4 +529,31 @@ class database_manager:
 
         # Return the data having been formatted
         return tasks
+    
+        # Method to get all active tasks for a student
+    def fetch_past_tasks_STUD(self, student_id):
+        """
+        Fetches all of the tasks which are past due date for a given student
+        """
+        classes = self.fetch_student_data(student_id)["classes"]  # Get all classes the student is part of
+
+        # Get the current date
+        curr_date = date.today()
+        curr_date_string = str(curr_date)[0:4] + str(curr_date)[5:7] + str(curr_date)[8:]
+
+        # Iterate over all classes the student is a part of
+        tasks = []
+        for cl in classes:
+            query = "SELECT set_id, class_id, name FROM Tasks WHERE due_date < " + curr_date_string + " AND class_id == " + str(cl)  # Get the classes
+            res = self.cursor.execute(query).fetchall()  # Run the query
+            for item in res:  # For each task, format the data and add it to the list
+                data = {
+                    "name": item[2],
+                    "class": item[1],
+                    "set": item[0]
+                }
+                tasks.append(data)
+
+        # Return the data having been formatted
+        return tasks
         

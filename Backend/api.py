@@ -463,3 +463,13 @@ def get_active_tasks_STUD(user: str):
     stud_id = db_control.fetch_all_records("Students", ["id"], ["username", user])[0][0]
     tasks = db_control.fetch_active_tasks_STUD(stud_id)  # Get the required data
     return tasks  # Provide the frontend with the necessary data
+
+# - Endpoint to fetch all past tasks for a STUDENT -
+@app.get("/api/students/past/{user}")
+def get_past_tasks_STUD(user: str):
+    """
+    Endpoint which returns past tasks for a given student
+    """
+    stud_id = db_control.fetch_all_records("Students", ["id"], ["username", user])[0][0]
+    tasks = db_control.fetch_past_tasks_STUD(stud_id)  # Get the data needed
+    return tasks  # Send the data to the frontend
