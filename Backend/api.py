@@ -452,3 +452,14 @@ def add_students(creds: StudCreds):
             break
     
     return success
+
+# - Endpoint to fetch active tasks for a STUDENT -
+@app.get("/api/students/active/{user}")
+def get_active_tasks_STUD(user: str):
+    """
+    Endpoint which fetches active tasks for a givent student
+    """
+    # Get the ID of the student from their username
+    stud_id = db_control.fetch_all_records("Students", ["id"], ["username", user])[0][0]
+    tasks = db_control.fetch_active_tasks_STUD(stud_id)  # Get the required data
+    return tasks  # Provide the frontend with the necessary data
