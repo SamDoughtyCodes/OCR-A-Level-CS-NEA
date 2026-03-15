@@ -473,3 +473,22 @@ def get_past_tasks_STUD(user: str):
     stud_id = db_control.fetch_all_records("Students", ["id"], ["username", user])[0][0]
     tasks = db_control.fetch_past_tasks_STUD(stud_id)  # Get the data needed
     return tasks  # Send the data to the frontend
+
+# - Endpoint which gets all of the submissions for a student -
+@app.get("/api/students/{user}")
+def get_student_data(user: str):
+    """
+    Endpoint which gets all submissions for a student
+    """
+    stud_id = db_control.fetch_all_records("Students", ["id"], ["username", user])[0][0]
+    all_data = db_control.fetch_student_data(stud_id)
+    return all_data
+
+# - Endpoint for accessing a question set
+@app.get("/api/sets/{set_id}")
+def get_question_set(set_id: int):
+    """
+    Endpoint which returns an entire question set based on a provided ID
+    """
+    q_set = db_control.fetch_question_set(set_id)
+    return q_set
