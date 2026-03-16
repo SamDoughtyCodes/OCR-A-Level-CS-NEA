@@ -101,5 +101,13 @@ if (token === null) {  // If no token
         const life_avg_elem = document.getElementById("life_avg");
         rec_avg_elem.innerHTML = `${String(recent_avg)}%<br>Recent Average`;
         life_avg_elem.innerHTML = `${String(life_avg)}%<br>Lifetime Average`;
+
+        // Add the insight on progress
+        const insight_ph = document.getElementById("insight");
+        if (recent_avg >= life_avg) {
+            insight_ph.innerHTML = "You're improving!<br>Well done!";
+        } else {
+            insight_ph.innerHTML = "Nice work,<br>keep it up!";
+        }
     });
 }
