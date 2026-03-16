@@ -1,0 +1,84 @@
+body {
+    font-family: "Gowun Dodum", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+}
+
+header {
+    background-color: #90223A;
+    color: white;
+    display: flex;
+    padding: 10px;
+}
+
+#logo_img {
+    display: block;
+    margin-left: auto;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+}
+
+#lhs_div {
+    margin: 1%;
+}
+
+#rhs_div {
+    margin: 1%;
+}
+
+#tasks_tab {
+    background-color: lightblue;
+    padding: 3%;
+    border-radius: 20px;
+}
+
+#tt_stats_boxes {
+    display: flex;
+}
+
+.tt_stat {
+    border: 1px solid black;
+    margin: 1%;
+    padding: 3px;
+}
+
+#stud_tab {
+    background-color: yellow;
+    padding: 3%;
+    border-radius: 20px;
+    display: flex;
+}
+
+#st_stats_boxes {
+    display: flex;
+}
+
+.st_stat {
+    border: 1px solid black;
+    margin: 1%;
+    padding: 3px;
+}
+
+#st_rhs_content {
+    padding: 3%;
+    display: flex;
+    align-items: center;
+}
+
+#next_tab {
+    background-color: lightgreen;
+    padding: 3%;
+    border-radius: 20px;
+    margin-top: 3%;
+}
+
+button {
+    margin: 1%;
+    background-color: lightblue;
+    border-radius: 10px;
+    font-size: 15px;
+}

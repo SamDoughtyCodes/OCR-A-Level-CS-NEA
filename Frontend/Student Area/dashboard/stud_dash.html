@@ -18,23 +18,30 @@
 
 <!-- Rest of the page -->
 <main>
+<!-- Div for items on the left of the page -->
+<div id="lhs_div">
     <!-- Tasks tab -->
     <div id="tasks_tab">
-        <p>Your starting points:</p>
+        <h3>Your starting points:</h3>
         <div id="tt_stats_boxes">
-            <p id="tt_active"><br>Active Tasks</p> <!-- Placeholder for active tasks -->
-            <p id="tt_overdue"><br>Overdue Tasks</p> <!-- Placeholder for overdue tasks-->
+            <p id="tt_active" class="tt_stat"><br>Active Tasks</p> <!-- Placeholder for active tasks -->
+            <p id="tt_overdue" class="tt_stat"><br>Overdue Tasks</p> <!-- Placeholder for overdue tasks-->
         </div>
-        <div id="tt_tasks_container">Tasks will appear here when set</div> <!-- Placeholder for tasks -->
+        <div id="tt_tasks_container">Tasks will appear here once set</div> <!-- Placeholder for tasks -->
     </div>
+</div>
 
+<!-- Div for items on the right of the page -->
+<div id="rhs_div">
     <!-- Student data tab -->
     <div id="stud_tab">
         <!-- Div for left hand side (lhs) content -->
         <div id="st_lhs_content">
-            <p>Your data:</p>
-            <p id="life_avg"><br>Lifetime Average</p>
-            <p id="recent_avg"><br>Recent Average</p>
+            <h3>Your data:</h3>
+            <div id="st_stats_boxes">
+            <p id="life_avg" class="st_stat"><br>Lifetime Average</p>
+            <p id="recent_avg" class="st_stat"><br>Recent Average</p>
+            </div>
         </div>
         <!-- Div for right hand side (rhs) content -->
         <div id="st_rhs_content">
@@ -44,11 +51,13 @@
 
     <!-- Next steps tab -->
     <div id="next_tab">
+        <h3>Next steps:</h3>
         <!-- Buttons linking to other pages -->
-        <button id="ind_study_butt">Independant Study</button>
-        <button id="lead_butt">Leaderboards</button>
+        <button id="ind_study_butt">Independant Study</button><br>
+        <button id="lead_butt">Leaderboards</button><br>
         <button id="history_butt">Task History</button>
     </div>
+</div>
 </main>
 </body>
 </html>
