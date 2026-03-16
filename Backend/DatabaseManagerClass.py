@@ -254,13 +254,13 @@ class database_manager:
 
         # Format submissions to be stored with the task names
         for submission in submissions:
-            name = self.fetch_all_records("Q_Sets", ["name"], ["id", submission[3]])  # Index 3 is Tasks.set_id
+            name = self.fetch_all_records("Q_Sets", ["name"], ["id", submission[3]])[0][0]  # Index 3 is Tasks.set_id
             sub_dict = {  # Create a dictionary for this submission
                 "id": submission[0],
-                "completion date": submission[1],
+                "completion_date": submission[1],
                 "score": submission[2],
-                "set id": submission[3],
-                "set name": name
+                "set_id": submission[3],
+                "set_name": name
             }
             formatted_subs.append(sub_dict)  # Add the data for this submission to the list of formatted subs
             del sub_dict  # Delete the dictionary so it can be re-used
