@@ -517,7 +517,7 @@ class database_manager:
         # Iterate over all classes the student is a part of
         tasks = []
         for cl in classes:
-            query = "SELECT set_id, class_id, name FROM Tasks WHERE due_date > " + curr_date_string + " AND class_id == " + str(cl)  # Get the classes
+            query = "SELECT set_id, class_id, name FROM Tasks WHERE (due_date > " + curr_date_string + ") AND (class_id == " + str(cl[0]) + ");"  # Get the classes
             res = self.cursor.execute(query).fetchall()  # Run the query
             for item in res:  # For each task, format the data and add it to the list
                 data = {
@@ -544,7 +544,7 @@ class database_manager:
         # Iterate over all classes the student is a part of
         tasks = []
         for cl in classes:
-            query = "SELECT set_id, class_id, name FROM Tasks WHERE due_date < " + curr_date_string + " AND class_id == " + str(cl)  # Get the classes
+            query = "SELECT set_id, class_id, name FROM Tasks WHERE due_date < " + curr_date_string + " AND class_id == " + str(cl[0])  # Get the classes
             res = self.cursor.execute(query).fetchall()  # Run the query
             for item in res:  # For each task, format the data and add it to the list
                 data = {
