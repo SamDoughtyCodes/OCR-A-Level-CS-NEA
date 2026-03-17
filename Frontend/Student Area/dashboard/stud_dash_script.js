@@ -126,5 +126,30 @@ if (token === null) {  // If no token
             html_str += `<button id="${task.name}_butt" onclick="tasks_redirect_func">${task.class}<br>${task.name}<br>Due ${date_str}</button>`;
         });
         tasks_div.innerHTML = html_str;  // Apply changes
+
+        // Onclick function for active tasks
+        // Links to other pages
     });
 }
+
+// Links to other pages for buttons
+const i_study_butt = document.getElementById("ind_study_butt");
+i_study_butt.addEventListener("click", (e) => {
+    // Redirect the user to indipendant study
+    e.preventDefault();
+    window.location = "/Frontend/Student Area/study/study.html";
+});
+
+const lead_butt = document.getElementById("lead_butt");
+lead_butt.addEventListener("click", (e) => {
+    // Redirect to the leaderboards page
+    e.preventDefault();
+    window.location = "/Frontend/Student Area/leaderboards/leads.html";
+});
+
+const t_hist_butt = document.getElementById("history_butt");
+t_hist_butt.addEventListener("click", (e) => {
+    // Redirect to the tasks page
+    e.preventDefault();
+    window.location = "/Frontend/Student Area/tasks/history.html";
+});
