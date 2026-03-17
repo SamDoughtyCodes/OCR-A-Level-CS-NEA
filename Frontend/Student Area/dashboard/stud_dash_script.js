@@ -113,15 +113,17 @@ if (token === null) {  // If no token
         // Displaying tasks to the screen
         const tasks_div = document.getElementById("tt_tasks_container");
         let html_str = "";
-        let t_month_str = (today.getMonth() < 9) ? "0" + String(today.getMonth()+1) : String(today.getMonth()+1);
-        let t_day_str = (today.getDate() < 10) ? "0" + String(today.getDate()) : String(today.getDate());
-        let t_comp_val = parseInt(today.getFullYear() + t_month_str + t_day_str);
+        const t = new Date();  // Represents today as a date object
+        let t_month_str = (t.getMonth() < 9) ? "0" + String(t.getMonth()+1) : String(t.getMonth()+1);
+        let t_day_str = (t.getDate() < 10) ? "0" + String(t.getDate()) : String(t.getDate());
+        let t_comp_val = parseInt(t.getFullYear() + t_month_str + t_day_str);
         all_incomplete.forEach(task => {
-            if (t_comp_val < task.due) {  // If the task is overdue
-                let date_str = "OVERDUE";
+            let date_str;
+            if (t_comp_val > task.due) {  // If the task is overdue
+                date_str = "OVERDUE";
             } else {  // If the due date has not yet passed
                 let d = String(task.due);  // Store due date
-                let date_str = `${d.slice(6)}/${d.slice(4, 6)}/${d.slice(0, 4)}`;
+                date_str = `${d.slice(6)}/${d.slice(4, 6)}/${d.slice(0, 4)}`;
             }
             html_str += `<button id="${task.c_id}_butt" onclick="tasks_redirect_func(this)">${task.class}<br>${task.name}<br>Due ${date_str}</button>`;
         });

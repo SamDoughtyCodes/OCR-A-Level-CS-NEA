@@ -47,6 +47,12 @@ main {
     padding: 3px;
 }
 
+#tt_active {
+    display: block;
+    margin-left: auto;
+    padding-right: 2%;
+}
+
 #stud_tab {
     background-color: yellow;
     padding: 3%;
