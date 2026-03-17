@@ -109,5 +109,22 @@ if (token === null) {  // If no token
         } else {
             insight_ph.innerHTML = "Nice work,<br>keep it up!";
         }
+
+        // Displaying tasks to the screen
+        const tasks_div = document.getElementById("tt_tasks_container");
+        let html_str = "";
+        let t_month_str = (today.getMonth() < 9) ? "0" + String(today.getMonth()+1) : String(today.getMonth()+1);
+        let t_day_str = (today.getDate() < 10) ? "0" + String(today.getDate()) : String(today.getDate());
+        let t_comp_val = parseInt(today.getFullYear() + t_month_str + t_day_str);
+        all_incomplete.forEach(task => {
+            if (t_comp_val < task.due) {  // If the task is overdue
+                let date_str = "OVERDUE";
+            } else {  // If the due date has not yet passed
+                let d = String(task.due);  // Store due date
+                let date_str = `${d.slice(6)}/${d.slice(4, 6)}/${d.slice(0, 4)}`;
+            }
+            html_str += `<button id="${task.name}_butt" onclick="tasks_redirect_func">${task.class}<br>${task.name}<br>Due ${date_str}</button>`;
+        });
+        tasks_div.innerHTML = html_str;  // Apply changes
     });
 }
