@@ -524,6 +524,7 @@ class database_manager:
                 data = {
                     "name": item[2],
                     "class": class_name,
+                    "c_id": item[1],
                     "set": item[0],
                     "due": item[3]
                 }
@@ -553,6 +554,7 @@ class database_manager:
                 data = {
                     "name": item[2],
                     "class": class_name,
+                    "c_id": item[1],
                     "set": item[0],
                     "due": item[3]
                 }

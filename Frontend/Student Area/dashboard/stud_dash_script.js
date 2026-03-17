@@ -123,13 +123,22 @@ if (token === null) {  // If no token
                 let d = String(task.due);  // Store due date
                 let date_str = `${d.slice(6)}/${d.slice(4, 6)}/${d.slice(0, 4)}`;
             }
-            html_str += `<button id="${task.name}_butt" onclick="tasks_redirect_func">${task.class}<br>${task.name}<br>Due ${date_str}</button>`;
+            html_str += `<button id="${task.c_id}_butt" onclick="tasks_redirect_func(this)">${task.class}<br>${task.name}<br>Due ${date_str}</button>`;
         });
         tasks_div.innerHTML = html_str;  // Apply changes
 
         // Onclick function for active tasks
-        // Links to other pages
     });
+}
+
+// Deal with clicks of task buttons
+function tasks_redirect_func(button) {
+    // Extract the task ID from the button ID
+    let t_id = button.id.slice(0, -5);
+    localStorage.setItem("ttc", t_id);  // Store the ID
+
+    // Redirect user to page to complete task
+    window.location = "/Frontend/Student Area/tasks/complete.html";
 }
 
 // Links to other pages for buttons
