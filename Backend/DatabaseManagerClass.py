@@ -241,12 +241,11 @@ class database_manager:
         query_class_link = """SELECT Classes.id, Classes.name
                             FROM Classes JOIN Student_Class_Link ON (Classes.id == Student_Class_Link.class_id)
                             WHERE Student_Class_Link.student_id == """ + str(student_id) + ";"
-        query_submissions = """ SELECT Submissions.id, Submissions.completion_date, Submissions.Score, Tasks.set_id
+        query_submissions = """ SELECT Submissions.id, Submissions.completion_date, Submissions.Score, Tasks.set_id, Tasks.id
                             FROM Submissions JOIN Tasks ON (Submissions.task_id == Tasks.id)
                             WHERE Submissions.student_id == """ + str(student_id) + ";"
         
         # Run the queries
-        print(query_user_tbl)
         usr_tbl = self.cursor.execute(query_user_tbl).fetchall()
         classes = self.cursor.execute(query_class_link).fetchall()
         submissions = self.cursor.execute(query_submissions).fetchall()
@@ -260,7 +259,8 @@ class database_manager:
                 "completion_date": submission[1],
                 "score": submission[2],
                 "set_id": submission[3],
-                "set_name": name
+                "set_name": name,
+                "task_id": submission[4]
             }
             formatted_subs.append(sub_dict)  # Add the data for this submission to the list of formatted subs
             del sub_dict  # Delete the dictionary so it can be re-used
@@ -517,7 +517,7 @@ class database_manager:
         # Iterate over all classes the student is a part of
         tasks = []
         for cl in classes:
-            query = "SELECT set_id, class_id, name, due_date FROM Tasks WHERE (due_date > " + curr_date_string + ") AND (class_id == " + str(cl[0]) + ");"  # Get the classes
+            query = "SELECT set_id, class_id, name, due_date, id FROM Tasks WHERE (due_date > " + curr_date_string + ") AND (class_id == " + str(cl[0]) + ");"  # Get the classes
             res = self.cursor.execute(query).fetchall()  # Run the query
             for item in res:  # For each task, format the data and add it to the list
                 class_name = self.fetch_all_records("Classes", ["name"], ["id", item[1]])[0][0]
@@ -526,7 +526,8 @@ class database_manager:
                     "class": class_name,
                     "c_id": item[1],
                     "set": item[0],
-                    "due": item[3]
+                    "due": item[3],
+                    "t_id": item[4]
                 }
                 tasks.append(data)
 
@@ -547,7 +548,7 @@ class database_manager:
         # Iterate over all classes the student is a part of
         tasks = []
         for cl in classes:
-            query = "SELECT set_id, class_id, name, due_date FROM Tasks WHERE due_date < " + curr_date_string + " AND class_id == " + str(cl[0])  # Get the classes
+            query = "SELECT set_id, class_id, name, due_date, id FROM Tasks WHERE due_date < " + curr_date_string + " AND class_id == " + str(cl[0])  # Get the classes
             res = self.cursor.execute(query).fetchall()  # Run the query
             for item in res:  # For each task, format the data and add it to the list
                 class_name = self.fetch_all_records("Classes", ["name"], ["id", item[1]])[0][0]
@@ -556,7 +557,8 @@ class database_manager:
                     "class": class_name,
                     "c_id": item[1],
                     "set": item[0],
-                    "due": item[3]
+                    "due": item[3],
+                    "t_id": item[4]
                 }
                 tasks.append(data)
 

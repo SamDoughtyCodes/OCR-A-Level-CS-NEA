@@ -38,29 +38,6 @@ if (token === null) {  // If no token
         welc_text.innerHTML = `Welcome, ${json_resp.payload.username}`;
         xp_text.innerHTML = `${String(json_resp.payload.xp)}XP`;
 
-        let all_incomplete = [];
-
-        // Get the active tasks for the student
-        let active = await fetch(`http://localhost:8000/api/students/active/${json_resp.payload.username}`);
-        let json_active = await active.json();
-        let number_active = json_active.length;
-        json_active.forEach(element => {all_incomplete.push(element);});
-
-        // Get the inactive tasks for the student
-        let inactive = await fetch(`http://localhost:8000/api/students/past/${json_resp.payload.username}`);
-        let json_inactive = await inactive.json();
-        let number_inactive = json_inactive.length;
-        json_inactive.forEach(element => {all_incomplete.push(element);});
-
-        // Update placeholders
-        const active_tasks = document.getElementById("tt_active");
-        active_tasks.innerHTML = `${String(number_active)}<br>Active Tasks`;
-        const overdue_tasks = document.getElementById("tt_overdue");
-        overdue_tasks.innerHTML = `${String(number_inactive)}<br>Overdue Tasks`;
-
-        //TODO: Add code to distinguish between overdue and past tasks,
-        //      this can literally just be checking against the student's submissions
-
         // Get all submissions for a student
         let student_data = await fetch(`http://localhost:8000/api/students/${json_resp.payload.username}`);
         let student_json = await student_data.json();  // Cast data from JSON string to JSON
@@ -109,6 +86,38 @@ if (token === null) {  // If no token
         } else {
             insight_ph.innerHTML = "Nice work,<br>keep it up!";
         }
+
+        // Store active and past tasks
+        let active = await (await fetch(`http://localhost:8000/api/students/active/${json_resp.payload.username}`)).json()
+        let past = await (await fetch(`http://localhost:8000/api/students/past/${json_resp.payload.username}`)).json()
+        let number_active = active.length;
+        let number_past = past.length;
+
+        // Combine arrays into one
+        let all_tasks = [...active, ...past];
+
+        // Get IDs of tasks for each submission
+        let sub_t_ids = [];
+        stud_subs.forEach(sub => {sub_t_ids.push(sub.task_id);});
+        
+        // Iterate over all tasks
+        let all_incomplete = []
+        all_tasks.forEach(task => {
+            // If the task has been submitted
+            if (sub_t_ids.includes(task.t_id)) {
+                // Alter counters based on type of task
+                if (active.includes(task)) {number_active -= 1;}
+                else if (past.includes(task)) {number_past -= 1;}
+            } else {  // If the task needs to be output
+                all_incomplete.push(task);
+            }
+        });
+        
+        // Update placeholders
+        const active_tasks = document.getElementById("tt_active");
+        active_tasks.innerHTML = `${String(number_active)}<br>Active Tasks`;
+        const overdue_tasks = document.getElementById("tt_overdue");
+        overdue_tasks.innerHTML = `${String(number_past)}<br>Overdue Tasks`;
 
         // Displaying tasks to the screen
         const tasks_div = document.getElementById("tt_tasks_container");
