@@ -129,12 +129,12 @@ if (token === null) {  // If no token
         all_incomplete.forEach(task => {
             let date_str;
             if (t_comp_val > task.due) {  // If the task is overdue
-                date_str = "OVERDUE";
+                date_str = '<mark class="od_style">OVERDUE</mark>';
             } else {  // If the due date has not yet passed
                 let d = String(task.due);  // Store due date
-                date_str = `${d.slice(6)}/${d.slice(4, 6)}/${d.slice(0, 4)}`;
+                date_str = `Due ${d.slice(6)}/${d.slice(4, 6)}/${d.slice(0, 4)}`;
             }
-            html_str += `<button id="${task.c_id}_butt" onclick="tasks_redirect_func(this)">${task.class}<br>${task.name}<br>Due ${date_str}</button>`;
+            html_str += `<button id="${task.c_id}_butt" onclick="tasks_redirect_func(this)">${task.class}<br>${task.name}<br>${date_str}</button>`;
         });
         tasks_div.innerHTML = html_str;  // Apply changes
 
