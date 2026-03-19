@@ -57,22 +57,25 @@ if (token === null) {  // If no token
 
 // Get the students for a class when the dropdown is updated
 const dropdown = document.getElementById("class_drop");
-const stud_list_div = document.getElementById("students_div");
+const stud_table = document.getElementById("studs_tb");
 const add_studs_butt = document.getElementById("add_stud_butt");
 
 // Function to load members of a class on update of the dropdown
 function format_students() {
+    // Reset table to base state
+    stud_table.innerHTML = "<tr><th>Student</th><th></th><th></th><th>Password resets</th></tr>"
+
     // Get the ID of the selected class
     let id = dropdown.value;
     fetch(`http://localhost:8000/api/classes/students/${id}`).then(resp => resp.json()).then(studs_json => {
         let studs_html_str = "";  // String which will store new HTML for the page
         studs_json.forEach(student => {
             // String of HTML for this specific student
-            let stud_html_fill = `${student.personal.username} <button id="${student.personal.username}_user_butt" class="stud_user" onclick="usr_upd_func(this)">Change Username</button><button id="${student.personal.username}_pass_butt" class="stud_pass" onclick="pass_upd_func(this)">Change Password</button><br>`;
+            let stud_html_fill = `<tr><td>${student.personal.username}</td><td><button id="${student.personal.username}_user_butt" class="stud_user" onclick="usr_upd_func(this)">Change Username</button></td><td><button id="${student.personal.username}_pass_butt" class="stud_pass" onclick="pass_upd_func(this)">Change Password</button></td><td>${student.personal.password_resets}</td></tr>`;
             studs_html_str += stud_html_fill;
         });
         // Fill the HTML for the page
-        stud_list_div.innerHTML = studs_html_str;
+        stud_table.innerHTML += studs_html_str;
     });
 
     // Update the text which includes class names

@@ -237,7 +237,7 @@ class database_manager:
             usr_data (dict): The collated and formated data for the student
         """
         # Build queries
-        query_user_tbl = "SELECT username, xp FROM Students WHERE id == " + str(student_id) + ";"
+        query_user_tbl = "SELECT username, xp, pword_resets FROM Students WHERE id == " + str(student_id) + ";"
         query_class_link = """SELECT Classes.id, Classes.name
                             FROM Classes JOIN Student_Class_Link ON (Classes.id == Student_Class_Link.class_id)
                             WHERE Student_Class_Link.student_id == """ + str(student_id) + ";"
@@ -270,7 +270,8 @@ class database_manager:
             # Personal is a dict containing the username and xp of the student
             "personal": {
                 "username": usr_tbl[0][0],  # 2nd index 0 is the username
-                "xp": usr_tbl[0][1]  # 2nd index 1 is the xp
+                "xp": usr_tbl[0][1],  # 2nd index 1 is the xp
+                "password_resets": usr_tbl[0][2]  # 2nd index 2 is the number of password resets
             },
             "classes": classes,  # Data on all classes the student is in
             "submissions": formatted_subs  # All submission data for that student
@@ -321,13 +322,20 @@ class database_manager:
             success (bool): A flag to indicate if the change was made successfully
         """
         try:  # Attempt to run the code
+            # Increase the number of password resets tracked
+            resets = int(self.fetch_all_records("Students", ["pword_resets"], ["id", student_id])[0][0])
+            n_resets = resets + 1
+            upd_resets_q = "UPDATE Students SET pword_resets = " + str(n_resets) + " WHERE id == " + str(student_id) + ";"
+            self.cursor.execute(upd_resets_q)
+
             # Create the query
             query = "UPDATE Students SET hashed_password = '" + new_hash + "' WHERE id == '" + str(student_id) + "';"
             self.cursor.execute(query)
             self.con.commit()
             success = True
-        except:  # If an error is raised at any point
+        except Exception as e:  # If an error is raised at any point
             success = False
+            print(e)
         return success
 
     def update_xp(self, student_id, xp_increase):
